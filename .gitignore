@@ -1,0 +1,7 @@
+.editorconfig
+*.pyc
+.vscode
+venv
+node_modules
+__pycache__
+*.pkl
