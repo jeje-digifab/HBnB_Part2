@@ -1,4 +1,4 @@
-from app.models import BaseModel
+from app.models.BaseModel import BaseModel
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -9,9 +9,9 @@ class User(BaseModel):
         super().__init__(**kwargs)
         self.email = self.validate_email(kwargs.get('email'))
         self.set_password(kwargs.get('password'))
-        self.first_name = self.validate_first_name(
+        self.first_name = self.validate_name(
             kwargs.get('first_name', ''), "First Name")
-        self.last_name = self.validate_last_name(
+        self.last_name = self.validate_name(
             kwargs.get('last_name', ''), "Last Name")
         self.is_admin = kwargs.get('is_admin', False)
         self.is_owner = kwargs.get('is_owner', False)
@@ -62,7 +62,7 @@ class User(BaseModel):
 
     @staticmethod
     def validate_name(name, field_name):
-        if len(name) > 50:
+        if not name or len(name) > 50:
             raise ValueError(f"{field_name} must be less than 50 characters")
         return name
 
