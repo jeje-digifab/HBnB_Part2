@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, Blueprint
 from app.models.amenity import Amenity
 app = Flask(__name__)
+bp = Blueprint('amenities', __name__)
 
 # list to stock Amenities
 amenities = []
