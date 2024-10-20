@@ -1,4 +1,5 @@
 from app.persistence.repository import InMemoryRepository
+from app.models.user import User
 
 
 class HBnBFacade:
@@ -9,7 +10,8 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
 
     def create_user(self, user_data):
-        user = user(**user_data)
+        # Assure-toi que tu utilises la bonne classe ici
+        user = User(**user_data)
         self.user_repo.add(user)
         return user
 
@@ -30,7 +32,7 @@ class HBnBFacade:
             self.user_repo.update(user_id, user_data)
             return user
         return None
-    
+
     def authenticate_user(self, email, password):
         user = self.user_repo.get_by_attribute('email', email)
         if user and user.check_password(password):

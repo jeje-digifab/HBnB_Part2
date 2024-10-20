@@ -2,11 +2,13 @@ from app.models.BaseModel import BaseModel
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+import uuid
 
 
 class User(BaseModel):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.id = str(uuid.uuid4())  # Ajoute un identifiant unique
         self.email = self.validate_email(kwargs.get('email'))
         self.set_password(kwargs.get('password'))
         self.first_name = self.validate_name(
