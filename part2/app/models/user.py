@@ -2,7 +2,6 @@ from app.models.BaseModel import BaseModel
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
-import uuid
 
 
 class User(BaseModel):
@@ -20,7 +19,7 @@ class User(BaseModel):
                 password, first_name, last_name, is_admin, and is_owner.
         """
         super().__init__(**kwargs)
-        self.id = str(uuid.uuid4())
+
         self.email = self.validate_email(kwargs.get('email'))
         self.set_password(kwargs.get('password'))
         self.first_name = self.validate_name(
