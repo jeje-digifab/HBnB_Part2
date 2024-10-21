@@ -1,6 +1,8 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
-
+from app.models.amenity import Amenity
+from app.models.place import Place
+from app.models.review import Review
 
 class HBnBFacade:
     """Facade for managing users and places in the HBnB application.
@@ -105,17 +107,96 @@ class HBnBFacade:
         pass
 
     def create_amenity(self, amenity_data):
-    # Placeholder for logic to create an amenity
-        pass
+        """Create a new amenity with the provided data."""
+        if not isinstance(amenity_data, dict):
+            raise ValueError("amenity_data must be a dictionary")
+
+        name = amenity_data.get("name")
+        description = amenity_data.get("description", None)  # Optional
+
+        amenity = Amenity(**amenity_data)
+        self.amenity_repo.add(amenity)
+        return amenity
+
 
     def get_amenity(self, amenity_id):
-    # Placeholder for logic to retrieve an amenity by ID
-        pass
+        """Retrieve an amenity by its unique ID.
+
+        Args:
+            amenity_id (str): The unique identifier of the amenity.
+
+        Returns:
+            Amenity: The Amenity instance if found, otherwise None.
+        """
+        return self.amenity_repo.get(amenity_id)
 
     def get_all_amenities(self):
-    # Placeholder for logic to retrieve all amenities
-        pass
+        """Retrieve all amenities in the repository.
+        Returns:
+            list: A list of Amenity instances.
+        """
+        return self.amenity_repo.get_all()
+
 
     def update_amenity(self, amenity_id, amenity_data):
-    # Placeholder for logic to update an amenity
+        """
+        Args:
+            amenity_id (str): The unique identifier of the amenity to update.
+            amenity_data (dict): A dictionary containing the attributes to update.
+        Returns:
+            Amenity: The updated Amenity instance if the amenity was found and updated,
+                    otherwise None.
+        Raises:
+            ValueError: If the provided amenity_data is not a dictionary or if it
+                        contains invalid fields.
+        """
+        amenity = self.amenity_repo.get(amenity_id)
+
+        if not amenity:
+            return None  # Return None if the amenity with the given ID was not found
+
+        if not isinstance(amenity_data, dict):
+            raise ValueError("amenity_data must be a dictionary")
+
+        # Update the amenity's attributes based on the provided data
+        for key, value in amenity_data.items():
+            if hasattr(amenity, key):
+                setattr(amenity, key, value)  # Update the attribute with the new value
+            else:
+                raise ValueError(f"Invalid attribute '{key}' for Amenity")
+        return amenity
+
+
+    def delete_amenity(self, amenity_id):
+        """Delete an amenity by its ID.
+        Args:
+            amenity_id (str): The unique identifier of the amenity to delete.
+        Returns:
+            bool: True if the amenity was successfully deleted, otherwise False.
+        """
+        return self.amenity_repo.delete(amenity_id)
+
+
+    def create_review(self, review_data):
+        # Placeholder for logic to create a review, including validation for user_id, place_id, and rating
+        pass
+
+    def get_review(self, review_id):
+        # Placeholder for logic to retrieve a review by ID
+        pass
+
+    def get_all_reviews(self):
+        # Placeholder for logic to retrieve all reviews
+        pass
+
+    def get_reviews_by_place(self, place_id):
+        # Placeholder for logic to retrieve all reviews for a specific place
+        pass
+
+    def update_review(self, review_id, review_data):
+        # Placeholder for logic to update a review
+        pass
+
+    def delete_review(self, review_id):
+        # Placeholder for logic to delete a review
         pass
