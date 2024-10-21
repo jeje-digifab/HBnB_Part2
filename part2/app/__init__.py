@@ -22,14 +22,8 @@ def create_app():
 
     api.add_namespace(users_ns, path='/api/v1/users')
     api.add_namespace(auth_ns, path='/api/v1/auth')
+    api.add_namespace(auth_ns, path='/api/v1/amenities')
+    api.add_namespace(auth_ns, path='/api/v1/places')
+    api.add_namespace(auth_ns, path='/api/v1/reviews')
 
     return app
-
-    """from app.api.v1 import users, places, reviews, amenities
-    app.register_blueprint(users.bp)
-    app.register_blueprint(places.bp)
-    app.register_blueprint(reviews.bp)
-    app.register_blueprint(amenities.bp)"""
-    # Placeholder for API namespaces (endpoints will be added later)
-    # Additional namespaces for places, reviews,
-    # and amenities will be added later
