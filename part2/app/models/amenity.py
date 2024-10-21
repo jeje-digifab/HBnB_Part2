@@ -1,6 +1,5 @@
 from app.models.BaseModel import BaseModel
 
-
 class Amenity(BaseModel):
     """
     Represents an amenity in the HBnB application.
@@ -12,7 +11,7 @@ class Amenity(BaseModel):
 
     Attributes:
     - name (str): The name of the amenity. This is a required attribute and
-    must not exceed 128 characters.
+    must not exceed 50 characters.
     - description (str): A brief description of the amenity.
     Optional, but must not exceed 255 characters.
     """
