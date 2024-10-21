@@ -16,12 +16,14 @@ class Amenity(BaseModel):
     Optional, but must not exceed 255 characters.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, description: str = None):
         """
         Initializes a new instance of the Amenity class.
         """
         super().__init__()
         self.set_name(name)
+        self.description = description  # Optional attribute
+
 
     def set_name(self, name: str):
         """
