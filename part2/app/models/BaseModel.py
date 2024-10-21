@@ -3,6 +3,26 @@ from datetime import datetime
 
 
 class BaseModel:
+    """Base class for all models in the application.
+
+    This class provides common attributes and methods for all models, including
+    unique identification (UUID), timestamps for creation and updates,
+    and methods
+    for converting model instances to dictionaries and updating attributes.
+
+    Attributes:
+        id (str): Unique identifier for the model instance.
+        created_at (datetime): Timestamp for when the model
+        instance was created.
+        updated_at (datetime): Timestamp for when the model
+        instance was last updated.
+
+    Methods:
+        save(): Updates the updated_at timestamp to the current time.
+        to_dict(): Converts the model instance to a dictionary representation.
+        update(data): Updates model attributes based on the
+        provided dictionary.
+    """
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, value in kwargs.items():
@@ -11,6 +31,9 @@ class BaseModel:
                         setattr(self, key, datetime.fromisoformat(value))
                     else:
                         setattr(self, key, value)
+
+            if 'id' not in kwargs:
+                self.id = str(uuid.uuid4())
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
