@@ -100,11 +100,32 @@ class HBnBFacade:
             return user
         return None
 
-    # Placeholder method for fetching a place by ID
-    def get_place(self, place_id):
+    def create_place(self, place_data):
+        """Create a new place with the provided data."""
+        if 'name' not in place_data or 'location' not in place_data:
+            raise ValueError("Missing required fields: 'name' and 'location'.")
+        
+        place = Place(**place_data)
+        self.place_repo.add(place)
+        return place
 
-        # Logic will be implemented in later tasks
-        pass
+    def get_place(self, place_id):
+        """Retrieve a place by its unique ID."""
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        """Retrieve all places."""
+        return self.place_repo.get_all()
+
+    def update_place(self, place_id, place_data):
+        """Update an existing place's information."""
+        place = self.get_place(place_id)
+        if place:
+            for key, value in place_data.items():
+                setattr(place, key, value)  # Update place attributes
+            self.place_repo.update(place_id, place)
+            return place
+        return None
 
     def create_amenity(self, amenity_data):
         """Create a new amenity with the provided data."""
@@ -153,18 +174,18 @@ class HBnBFacade:
         amenity = self.amenity_repo.get(amenity_id)
 
         if not amenity:
-            return None  # Return None if the amenity with the given ID was not found
+            return None
 
         if not isinstance(amenity_data, dict):
             raise ValueError("amenity_data must be a dictionary")
 
-        # Update the amenity's attributes based on the provided data
         for key, value in amenity_data.items():
             if hasattr(amenity, key):
                 setattr(amenity, key, value)  # Update the attribute with the new value
             else:
                 raise ValueError(f"Invalid attribute '{key}' for Amenity")
         return amenity
+
 
 
     def delete_amenity(self, amenity_id):
@@ -178,25 +199,57 @@ class HBnBFacade:
 
 
     def create_review(self, review_data):
-        # Placeholder for logic to create a review, including validation for user_id, place_id, and rating
-        pass
+        """
+        Creates a new review. Validates that the user and place exist, and ensures the rating is valid.
+        """
+        user = self.user_repo.get(review_data['user_id'])
+        place = self.place_repo.get(review_data['place_id'])
+
+        if not user:
+            raise ValueError("User not found")
+        if not place:
+            raise ValueError("Place not found")
+        if not (1 <= review_data['rating'] <= 5):
+            raise ValueError("Rating must be between 1 and 5")
+
+        new_review = Review(**review_data)
+        self.review_repo.add(new_review)
+        return new_review
 
     def get_review(self, review_id):
-        # Placeholder for logic to retrieve a review by ID
-        pass
+        """
+        Retrieves a review by its ID. Returns None if not found.
+        """
+        return self.review_repo.get(review_id)
 
     def get_all_reviews(self):
-        # Placeholder for logic to retrieve all reviews
-        pass
+        """
+        Retrieves all reviews from the repository.
+        """
+        return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        """
+        Retrieves all reviews for a specific place by its ID.
+        """
+        return self.review_repo.get_by_attribute('place_id', place_id)
 
     def update_review(self, review_id, review_data):
-        # Placeholder for logic to update a review
-        pass
+        """
+        Updates an existing review by ID. Validates new data and returns the updated review.
+        """
+        review = self.review_repo.get(review_id)
+        if not review:
+            raise ValueError("Review not found")
+
+        if 'rating' in review_data and not (1 <= review_data['rating'] <= 5):
+            raise ValueError("Rating must be between 1 and 5")
+
+        self.review_repo.update(review_id, review_data)
+        return review
 
     def delete_review(self, review_id):
-        # Placeholder for logic to delete a review
-        pass
+        """
+        Deletes a review by its ID.
+        """
+        self.review_repo.delete(review_id)
