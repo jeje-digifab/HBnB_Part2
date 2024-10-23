@@ -60,8 +60,25 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner = owner
-        self.reviews = []  # List to store related reviews
-        self.amenities = []  # List to store related amenities
+        self.reviews = []
+        self.amenities = []
+
+    def to_dict(self):
+        """complete method to serialize obj"""
+        place_dict = {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "owner_id": self.owner.id,
+            "amenities": [amenity.id for amenity in self.amenities],
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+            "__class__": self.__class__.__name__
+        }
+        return place_dict
 
     def add_review(self, review):
         """Add a review to the place."""
