@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade
+from app.services.facade import hbnb_facade as facade
 
 api = Namespace('reviews', description='Review operations')
 
@@ -26,7 +26,6 @@ review_model = api.model('Review', {
     'place': fields.Nested(place_model, description='Place details')
 })
 
-facade = HBnBFacade()
 
 @api.route('/')
 class ReviewList(Resource):
@@ -35,7 +34,7 @@ class ReviewList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new review"""
-        data = api.payload  # Get the input data
+        data = api.payload
         try:
             new_review = facade.create_review(data)
             return {'message': 'Review created', 'review': new_review.to_dict()}, 201
@@ -48,10 +47,11 @@ class ReviewList(Resource):
     def get(self):
         """Retrieve a list of all reviews"""
         try:
-            reviews = facade.get_all_reviews()  # Fetch all reviews from the facade
+            reviews = facade.get_all_reviews()
             return {'reviews': [review.to_dict() for review in reviews]}, 200
         except Exception as e:
             return {'message': str(e)}, 500
+
 
 @api.route('/<review_id>')
 class ReviewResource(Resource):
