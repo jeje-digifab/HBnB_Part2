@@ -4,6 +4,7 @@ from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
 
+
 class HBnBFacade:
     """Facade for managing users and places in the HBnB application.
 
@@ -100,14 +101,30 @@ class HBnBFacade:
             return user
         return None
 
-    def create_place(self, place_data):
-        """Create a new place with the provided data."""
-        if 'name' not in place_data or 'location' not in place_data:
-            raise ValueError("Missing required fields: 'name' and 'location'.")
-        
-        place = Place(**place_data)
-        self.place_repo.add(place)
-        return place
+
+     def create_place(self, place_data):
+        owner_id = place_data.get('owner_id')
+        owner = self.user_repo.get(owner_id)
+        if owner is None:
+            raise ValueError("Owner not found")
+
+        place_data_copy = place_data.copy()
+        amenities_ids = place_data_copy.pop('amenities', [])
+        place_data_copy.pop('owner_id')
+        place_data_copy['owner'] = owner
+
+        new_place = Place(**place_data_copy)
+
+        for amenity_id in amenities_ids:
+            amenity = self.amenity_repo.get(amenity_id)
+            if amenity:
+                new_place.add_amenity(amenity)
+            else:
+                raise ValueError(f"Amenity with ID '{amenity_id}' not found")
+
+        self.place_repo.add(new_place)
+        return new_place
+
 
     def get_place(self, place_id):
         """Retrieve a place by its unique ID."""
@@ -200,7 +217,18 @@ class HBnBFacade:
 
     def create_review(self, review_data):
         """
-        Creates a new review. Validates that the user and place exist, and ensures the rating is valid.
+        Create a new place with the provided data.
+
+    This method creates a new place by verifying the existence of the owner,
+    properly managing associated amenities, and ensuring all necessary data
+    is present and valid before creating and storing the new place.
+
+    Args:
+        place_data (dict): A dictionary containing the place's attributes,
+                           including 'owner_id' and optionally 'amenities'.
+
+    Returns:
+        Place: The newly created Place instance.
         """
         user = self.user_repo.get(review_data['user_id'])
         place = self.place_repo.get(review_data['place_id'])
@@ -253,3 +281,6 @@ class HBnBFacade:
         Deletes a review by its ID.
         """
         self.review_repo.delete(review_id)
+
+
+hbnb_facade = HBnBFacade()
