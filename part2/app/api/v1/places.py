@@ -37,3 +37,18 @@ class PlaceList(Resource):
             return place.to_dict(), 201
         except ValueError as e:
             return {'error': str(e)}, 400
+
+@api.route('/<place_id>')
+class PlaceResource(Resource):
+    @api.response(200, 'Place details retrieved successfully')
+    @api.response(404, 'Place not found')
+    def get(self, place_id):
+        """Get place details by ID"""
+        try:
+            place = facade.get_place(place_id)  # Fetch place by ID
+            if place:
+                return {'place': place.to_dict()}, 200  # Return the place details
+            else:
+                return {'message': 'Place not found'}, 404  # Return not found message
+        except Exception as e:
+            return {'message': str(e)}, 500  # Return error message
