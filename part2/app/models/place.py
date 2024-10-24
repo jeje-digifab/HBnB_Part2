@@ -27,12 +27,13 @@ class Place(BaseModel):
     """
 
     def __init__(self,
-                 title,
-                 description,
-                 price,
-                 latitude,
-                 longitude,
-                 owner: User):
+                title,
+                description,
+                price,
+                latitude,
+                longitude,
+                owner_id,
+                owner: User):
         """
         Initializes a new instance of the Place class.
 
@@ -59,6 +60,7 @@ class Place(BaseModel):
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
+        self.owner_id = owner_id
         self.owner = owner
         self.reviews = []
         self.amenities = []
