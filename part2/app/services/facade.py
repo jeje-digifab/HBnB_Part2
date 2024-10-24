@@ -216,71 +216,79 @@ class HBnBFacade:
 
 
     def create_review(self, review_data):
+        """Create a new review for a place.
+
+        Args:
+            review_data (dict): A dictionary containing review attributes.
+
+        Returns:
+            Review: The created Review instance.
         """
-        Create a new place with the provided data.
-
-    This method creates a new place by verifying the existence of the owner,
-    properly managing associated amenities, and ensuring all necessary data
-    is present and valid before creating and storing the new place.
-
-    Args:
-        place_data (dict): A dictionary containing the place's attributes,
-                           including 'owner_id' and optionally 'amenities'.
-
-    Returns:
-        Place: The newly created Place instance.
-        """
-        user = self.user_repo.get(review_data['user_id'])
-        place = self.place_repo.get(review_data['place_id'])
-
-        if not user:
-            raise ValueError("User not found")
-        if not place:
-            raise ValueError("Place not found")
-        if not (1 <= review_data['rating'] <= 5):
-            raise ValueError("Rating must be between 1 and 5")
-
-        new_review = Review(**review_data)
-        self.review_repo.add(new_review)
-        return new_review
+        place = self.get_place(review_data['place_id'])
+        user = self.get_user(review_data['user_id'])
+        review = Review(review_data['text'], review_data['rating'], place, user)
+        self.review_repo.add(review)
+        return review
 
     def get_review(self, review_id):
-        """
-        Retrieves a review by its ID. Returns None if not found.
+        """Retrieve a review by its unique ID.
+
+        Args:
+            review_id (str): The unique identifier of the review.
+
+        Returns:
+            Review: The Review instance if found, otherwise None.
         """
         return self.review_repo.get(review_id)
 
     def get_all_reviews(self):
-        """
-        Retrieves all reviews from the repository.
+        """Retrieve all reviews in the repository.
+
+        Returns:
+            list: A list of Review instances.
         """
         return self.review_repo.get_all()
 
-    def get_reviews_by_place(self, place_id):
-        """
-        Retrieves all reviews for a specific place by its ID.
-        """
-        return self.review_repo.get_by_attribute('place_id', place_id)
-
     def update_review(self, review_id, review_data):
-        """
-        Updates an existing review by ID. Validates new data and returns the updated review.
-        """
-        review = self.review_repo.get(review_id)
-        if not review:
-            raise ValueError("Review not found")
+        """Update an existing review with new data.
 
-        if 'rating' in review_data and not (1 <= review_data['rating'] <= 5):
-            raise ValueError("Rating must be between 1 and 5")
+        Args:
+            review_id (str): The unique identifier of the review to update.
+            review_data (dict): A dictionary containing the updated review attributes.
 
-        self.review_repo.update(review_id, review_data)
-        return review
+        Returns:
+            Review: The updated Review instance if the review was found and updated,
+            otherwise None.
+        """
+        review = self.get_review(review_id)
+        if review:
+            for key, value in review_data.items():
+                setattr(review, key, value)
+            self.review_repo.update(review_id, review)
+            return review
+        return None
 
     def delete_review(self, review_id):
+        """Delete a review by its unique ID.
+
+        Args:
+            review_id (str): The unique identifier of the review.
+
+        Returns:
+            bool: True if the review was successfully deleted, otherwise False.
         """
-        Deletes a review by its ID.
+        return self.review_repo.delete(review_id)
+
+    def get_reviews_by_place(self, place_id):
+        """Get all reviews associated with a specific place.
+
+        Args:
+            place_id (str): The unique identifier of the place.
+
+        Returns:
+            list: A list of Review instances associated with the place.
         """
-        self.review_repo.delete(review_id)
+        return [review for review in self.review_repo.get_all() if review.place.id == place_id]
 
 
 hbnb_facade = HBnBFacade()
