@@ -103,7 +103,6 @@ class HBnBFacade:
 
 
     def create_place(self, place_data):
-<<<<<<< Updated upstream
         owner_id = place_data.get('owner_id')
         owner = self.user_repo.get(owner_id)
         if owner is None:
@@ -125,26 +124,6 @@ class HBnBFacade:
 
         self.place_repo.add(new_place)
         return new_place
-=======
-        try:
-            #  Get all the dict to create new place
-            title = place_data.get('title')
-            description = place_data.get('description')
-            latitude = place_data.get('latitude')
-            longitude = place_data.get('longitude')
-            price = place_data.get('price')
-            owner_id = place_data.get('owner_id')
-            owner = place_data.get('owner')
-
-            if not title or not description or not latitude or not longitude or not price or not owner_id or not owner:
-                raise ValueError("Missing required fields: 'title', 'description', 'latitude', 'longitude', 'price', 'owner_id', or 'owner'.")
-
-            new_place = Place(title=title, latitude=latitude, longitude=longitude, price=price, owner_id=owner_id)
-            self.place_repository.add(new_place)
-            return new_place
-        except Exception as e:
-            raise ValueError(f"Error while creating the place: {str(e)}")
->>>>>>> Stashed changes
 
 
     def get_place(self, place_id):
