@@ -59,7 +59,8 @@ class PlaceResource(Resource):
     def get(self, place_id):
         """Get place details by ID"""
         try:
-            place = facade.get_place(place_id)  # Fetch place by ID
+            # Fetch place by ID
+            place = facade.get_place(place_id)
             if place:
                 # Return the place details
                 return {'place': place.to_dict()}, 200

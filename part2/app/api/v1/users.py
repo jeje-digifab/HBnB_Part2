@@ -134,7 +134,10 @@ class UserResource(Resource):
             'is_admin': updated_user.is_admin,
             'is_owner': updated_user.is_owner,
             'owned_places': [place.id for place in updated_user.owned_places],
-            'rented_places': [place.id for place in updated_user.rented_places],
+            'rented_places': [
+                place.id
+                for place in updated_user.rented_places
+            ],
             'created_at': updated_user.created_at.isoformat(),
             'updated_at': updated_user.updated_at.isoformat()
         }, 200
