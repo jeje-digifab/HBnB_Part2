@@ -216,19 +216,26 @@ class HBnBFacade:
 
 
     def create_review(self, review_data):
-        """Create a new review for a place.
+        """Create a review instance from the provided data."""
+        try:
+            print(f"Creating review with data: {review_data}")  # Log the input data
 
-        Args:
-            review_data (dict): A dictionary containing review attributes.
+            # Fetch the place and user by ID
+            place = self.place_repo.get(review_data['place_id'])
+            user = self.user_repo.get(review_data['user_id'])
 
-        Returns:
-            Review: The created Review instance.
-        """
-        place = self.get_place(review_data['place_id'])
-        user = self.get_user(review_data['user_id'])
-        review = Review(review_data['text'], review_data['rating'], place, user)
-        self.review_repo.add(review)
-        return review
+            review = Review(
+                text=review_data['text'],
+                rating=review_data['rating'],
+                place=place,
+                user=user
+            )
+            self.review_repo.add(review)
+            return review
+        except KeyError as e:
+            raise ValueError(f"Missing required field: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Error while creating review: {str(e)}")
 
     def get_review(self, review_id):
         """Retrieve a review by its unique ID.

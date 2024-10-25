@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade as facade
+from app.services.facade import hbnb_facade as facade
 
 api = Namespace('reviews', description='Review operations')
 
@@ -19,6 +19,8 @@ class ReviewList(Resource):
     def post(self):
         """Register a new review"""
         data = api.payload  # Get the request payload
+        print(f"Payload received: {data}")  # Debug to check the payload
+
         try:
             new_review = facade.create_review(data)  # Create the review using the facade
             return {'message': 'Review created', 'review': new_review.to_dict()}, 201  # Convert to dict
@@ -26,6 +28,7 @@ class ReviewList(Resource):
             return {'message': f'Missing required field: {str(e)}'}, 400
         except Exception as e:
             return {'message': str(e)}, 500
+
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
@@ -74,7 +77,7 @@ class ReviewResource(Resource):
     def delete(self, review_id):
         """Delete a review"""
         try:
-            if facade.delete_review(review_id):  # Delete review using the facade
+            if facade.delete_review(review_id):
                 return {'message': 'Review deleted'}, 200
             else:
                 return {'message': 'Review not found'}, 404
