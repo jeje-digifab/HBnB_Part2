@@ -41,11 +41,12 @@ class PlaceList(Resource):
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        places = facade.get_all_places()
-        if places is not None:
-            return places, 200
-        else:
-            return {'message': 'List of places not retrieved successfully'}, 500
+        try:
+            places = facade.get_all_places()
+            return [place.to_dict() for place in places], 200
+        except Exception as e:
+            return {'message': str(e)}, 500
+
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -68,9 +69,14 @@ class PlaceResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
         """Update a place's information"""
-        # Placeholder for the logic to update a place by ID
         place_data = api.payload
-        updated_place = facade.update_place(place_id, place_data)
-        if not updated_place:
-            return {'error': 'Place not found'}, 404
-        return updated_place, 200
+        try:
+            updated_place = facade.update_place(place_id, place_data)
+            if updated_place:
+                return updated_place.to_dict(), 200
+            else:
+                return {'error': 'Place not found'}, 404
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except Exception as e:
+            return {'message': str(e)}, 500
