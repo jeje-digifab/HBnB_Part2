@@ -5,8 +5,8 @@ from app.services.facade import hbnb_facade as facade
 api = Namespace('auth', description='Authentication operations')
 
 login_model = api.model('Login', {
-    'email': fields.String(required=True, description='User email'),
-    'password': fields.String(required=True, description='User password')
+    'email': fields.String(required=True, description='User email', example='jane.doe@example.com'),
+    'password': fields.String(required=True, description='User password', example='securepassword')
 })
 
 
