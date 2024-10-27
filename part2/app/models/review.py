@@ -72,3 +72,29 @@ class Review(BaseModel):
             raise ValueError("Rating must be between 1 and 5.")
         self.rating = rating
         self.save()
+
+    def update_review(self, review_data):
+        """Update the review with the provided data.
+
+        Args:
+            review_data (dict): A dictionary containing the attributes to update.
+
+        Raises:
+            ValueError: If the provided review_data is not a dictionary or if it
+                        contains invalid fields.
+        """
+        if not isinstance(review_data, dict):
+            raise ValueError("review_data must be a dictionary")
+
+        for key, value in review_data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)  # Update the attribute with the new value
+            else:
+                raise ValueError(f"Invalid attribute '{key}' for Review")
+        self.save()  # Save the changes after updating
+
+    def delete(self):
+        """Delete the review instance from the repository."""
+        if self.review_repo.delete(self.id):
+            return True
+        return False

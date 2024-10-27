@@ -43,11 +43,19 @@ class InMemoryRepository(Repository):
     def update(self, obj_id, data):
         obj = self.get(obj_id)
         if obj:
-            obj.update(data)
+            for key, value in data.items():
+                if hasattr(obj, key):
+                    setattr(obj, key, value)
+                else:
+                    raise ValueError(f"Invalid attribute '{key}' for {obj.__class__.__name__}")
+            return obj
+        return None
 
     def delete(self, obj_id):
         if obj_id in self._storage:
             del self._storage[obj_id]
+            return True
+        return False
 
     def get_by_attribute(self, attr_name, attr_value):
         return next((obj for obj in self._storage.values() if getattr(obj, attr_name) == attr_value), None)
