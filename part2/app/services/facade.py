@@ -94,7 +94,10 @@ class HBnBFacade:
                 raise ValueError("place_data must be a dictionary")
 
             for key, value in place_data.items():
-                if key in ['title', 'description', 'price', 'latitude', 'longitude']:
+                if key in ['title', 'description',
+                           'price',
+                           'latitude',
+                           'longitude']:
                     setattr(place, key, value)
                 elif key == 'owner_id':
                     owner = self.user_repo.get(value)
@@ -114,7 +117,7 @@ class HBnBFacade:
             raise ValueError("amenity_data must be a dictionary")
 
         name = amenity_data.get("name")
-        description = amenity_data.get("description", None)  # Optional
+        description = amenity_data.get("description", None)
 
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
@@ -142,12 +145,15 @@ class HBnBFacade:
         """
         Args:
             amenity_id (str): The unique identifier of the amenity to update.
-            amenity_data (dict): A dictionary containing the attributes to update.
+            amenity_data (dict): A dictionary containing the
+                attributes to update.
         Returns:
-            Amenity: The updated Amenity instance if the amenity was found and updated,
+            Amenity: The updated Amenity instance if the amenity
+                was found and updated,
                     otherwise None.
         Raises:
-            ValueError: If the provided amenity_data is not a dictionary or if it
+            ValueError: If the provided amenity_data is
+                not a dictionary or if it
                         contains invalid fields.
         """
         amenity = self.amenity_repo.get(amenity_id)
@@ -171,7 +177,8 @@ class HBnBFacade:
         Args:
             amenity_id (str): The unique identifier of the amenity to delete.
         Returns:
-            bool: True if the amenity was successfully deleted, otherwise False.
+            bool: True if the amenity was successfully deleted,
+                otherwise False.
         """
         return self.amenity_repo.delete(amenity_id)
 
