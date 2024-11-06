@@ -1,0 +1,6 @@
+Flask
+Flask-RESTx
+Flask-JWT-Extended
+python-dotenv
+pytest
+unittest
