@@ -12,16 +12,18 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 
 
-def create_app():
+def create_app(config_class="config.DevelopmentConfig"):
     """app configuration"""
     app = Flask(__name__)
+    app.config.from_object(config_class)
     api = Api(app, version='1.0', title='HBnB API',
               description='HBnB Application API')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
-    jwt = JWTManager(app)
+    jwt = JWTManager()
+    jwt.init_app(app)
 
     api.add_namespace(users_ns, path='/api/v1/users')
     api.add_namespace(auth_ns, path='/api/v1/auth')
