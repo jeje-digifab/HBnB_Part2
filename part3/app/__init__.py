@@ -18,10 +18,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     app.config.from_object(config_class)
     api = Api(app, version='1.0', title='HBnB API',
               description='HBnB Application API')
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-    app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
-
+    
     jwt = JWTManager()
     jwt.init_app(app)
 
