@@ -11,11 +11,20 @@ user_model = api.model('User', {
                                 description='First name of the user',
                                 example='Jane'),
     'last_name': fields.String(required=True,
-                                description='Last name of the user'),
+                               description='Last name of the user',
+                               example='Doe'),
     'email': fields.String(required=True,
-                                description='Email of the user'),
+                           description='Email of the user',
+                           example='jane.doe@example.com'),
     'password': fields.String(required=True,
-                                description='Password of the user')
+                              description='Password of the user',
+                              example='securepassword'),
+    'is_admin': fields.Boolean(required=True,
+                               description='Is the user an admin?',
+                               example=True),
+    'is_owner': fields.Boolean(required=True,
+                               description='Is the user an owner?',
+                               example=True)
 })
 
 
@@ -60,8 +69,13 @@ class UserList(Resource):
         """
         users = facade.get_all_users()
         return [{'id': user.id, 'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email} for user in users], 200
+                 'last_name': user.last_name, 'email': user.email,
+                 'is_admin': user.is_admin, 'is_owner': user.is_owner,
+                 'owned_places': [place.id for place in user.owned_places],
+                 'rented_places': [place.id for place in user.rented_places],
+                 'created_at': user.created_at.isoformat(),
+                 'updated_at': user.updated_at.isoformat()
+                 } for user in users], 200
 
 
 @api.route('/<user_id>')

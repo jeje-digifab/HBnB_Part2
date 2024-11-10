@@ -124,42 +124,6 @@ class PlaceResource(Resource):
         except ValueError as e:
             logger.error(f"ValueError: {str(e)}")
             return {'error': str(e)}, 400
-    @api.response(200, 'List of places retrieved successfully')
-    def get(self):
-        """Retrieve a list of all places"""
-        try:
-            places = facade.get_all_places()  # Use facade to fetch all places
-            return {'places': [place.to_dict() for place in places]}, 200  # Convert each place to dict
         except Exception as e:
-            return {'message': str(e)}, 500  # Return error message
-
-@api.route('/<place_id>')
-class PlaceResource(Resource):
-    @api.response(200, 'Place details retrieved successfully')
-    @api.response(404, 'Place not found')
-    def get(self, place_id):
-        """Get place details by ID"""
-        try:
-            place = facade.get_place(place_id)  # Fetch place by ID
-            if place:
-                return {'place': place.to_dict()}, 200  # Return the place details
-            else:
-                return {'message': 'Place not found'}, 404  # Return not found message
-        except Exception as e:
-            return {'message': str(e)}, 500  # Return error message
-
-    @api.expect(place_model)
-    @api.response(200, 'Place updated successfully')
-    @api.response(404, 'Place not found')
-    @api.response(400, 'Invalid input data')
-    def put(self, place_id):
-        """Update a place's information"""
-        data = api.payload  # Get the updated data
-        try:
-            updated_place = facade.update_place(place_id, data)  # Update place using facade
-            if updated_place:
-                return {'message': 'Place updated', 'place': updated_place.to_dict()}, 200  # Return updated place
-            else:
-                return {'message': 'Place not found'}, 404  # Return not found message
-        except Exception as e:
-            return {'message': str(e)}, 400  # Return error message
+            logger.error(f"Exception: {str(e)}")
+            return {'message': str(e)}, 500
