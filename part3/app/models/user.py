@@ -1,8 +1,9 @@
 from app.models.BaseModel import BaseModel
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 import re
-
+bcrypt = Bcrypt()
 
 class User(BaseModel):
     """Represents a user in the application.
@@ -146,27 +147,21 @@ class User(BaseModel):
 
         super().update(data)
 
-    def set_password(self, password):
-        """Set the user's password after hashing it.
+    def hash_password(self, password):
+        """Hash the provided password.
 
         Args:
-            password (str): The password to set.
-
-        Raises:
-            ValueError: If no password is provided.
+            password (str): The password to hash.
         """
-        if password:
-            self.password = generate_password_hash(password)
-        else:
-            raise ValueError("Password is required")
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    def check_password(self, password):
-        """Check if the provided password matches the user's hashed password.
+    def verify_password(self, password):
+        """Verify the provided password matches the user's hashed password.
 
         Args:
-            password (str): The password to check.
+            password (str): The password to verify.
 
         Returns:
-            bool: True if the password matches, False otherwise.
+            bool: True if the password is valid, False otherwise.
         """
-        return check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self.password, password)

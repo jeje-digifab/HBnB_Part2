@@ -8,6 +8,7 @@ from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 import os
 from dotenv import load_dotenv
+from flask_bcrypt import Bcrypt
 
 load_dotenv('.env')
 
@@ -20,6 +21,7 @@ def create_app(config_class="config.DevelopmentConfig"):
               description='HBnB Application API')
     
     jwt = JWTManager()
+    bcrypt = Bcrypt()
     jwt.init_app(app)
 
     api.add_namespace(users_ns, path='/api/v1/users')
