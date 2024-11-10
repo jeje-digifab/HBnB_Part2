@@ -8,7 +8,10 @@ from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 import os
 from dotenv import load_dotenv
-
+from flask_bcrypt import Bcrypt
+# from flask_sqlalchemy import SQLAlchemy
+# db = SQLAlchemy(app)
+bcrypt = Bcrypt()
 load_dotenv('.env')
 
 
@@ -17,8 +20,9 @@ def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     app.config.from_object(config_class)
     api = Api(app, version='1.0', title='HBnB API',
-              description='HBnB Application API')
+            description='HBnB Application API')
     
+    bcrypt.init_app(app)
     jwt = JWTManager()
     jwt.init_app(app)
 

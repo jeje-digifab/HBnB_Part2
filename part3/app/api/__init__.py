@@ -8,8 +8,12 @@ from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 import os
 from dotenv import load_dotenv
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 load_dotenv('.env')
+
 
 
 def create_app():
@@ -22,6 +26,7 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
+    bcrypt.init_app(app)
     jwt = JWTManager(app)
 
     api.add_namespace(users_ns, path='/api/v1/users')
