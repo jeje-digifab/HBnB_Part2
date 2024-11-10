@@ -1,5 +1,8 @@
 from app.persistence.repository import SQLAlchemyRepository
-
+from app.models.user import User
+from app.models.amenity import Amenity
+from app.models.place import Place
+from app.models.review import Review
 class HBnBFacade:
     """Facade for managing users and places in the HBnB application.
 
@@ -13,10 +16,7 @@ class HBnBFacade:
         Initialize the HBnBFacade with in-memory repositories.
         Switched to SQLAlchemyRepository
         """
-        from app.models.user import User
-        from app.models.amenity import Amenity
-        from app.models.place import Place
-        from app.models.review import Review
+
 
         self.user_repository = SQLAlchemyRepository(User)
         self.place_repository = SQLAlchemyRepository(Place)
