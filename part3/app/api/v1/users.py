@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import hbnb_facade as facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('users', description='User operations')
 
@@ -43,10 +44,7 @@ class UserList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """
-        This method expects a JSON payload containing `first_name`,
-        `last_name`, `email`, and `password`. It checks if the email
-        is already registered. If not, it creates a new user and
-        returns the user details.
+        Create a new user with hashed password.
         """
         user_data = api.payload
         existing_user = facade.get_user_by_email(user_data['email'])
@@ -56,8 +54,7 @@ class UserList(Resource):
         user = facade.create_user(user_data)
         if not user:
             return {'error': 'Failed to create user'}, 400
-        return {'id': user.id, 'first_name': user.first_name,
-                'last_name': user.last_name, 'email': user.email}, 201
+        return {'id': user.id, 'message': 'User created successfully'}, 201
 
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
@@ -89,11 +86,6 @@ class UserResource(Resource):
     def get(self, user_id):
         """
         Get a user's details by their ID.
-
-        This method fetches the user with the given `user_id` and returns
-        their details, including `id`, `first_name`, `last_name`, `email`,
-        `is_admin`, `is_owner`, `owned_places`, `rented_places`,
-        `created_at`, and `updated_at`.
         """
         user = facade.get_user(user_id)
         if not user:
@@ -115,6 +107,8 @@ class UserResource(Resource):
     @api.response(200, 'User details updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def put(self, user_id):
         """
         Update a user's details.
@@ -122,22 +116,37 @@ class UserResource(Resource):
         `last_name`, and `email` based on the provided `user_id`.
         """
         user_data = api.payload
+        current_user = get_jwt_identity()
 
-        updated_user = facade.update_user(user_id, user_data)
-        if not updated_user:
-            return {'error': 'User not found'}, 404
-        return {
-            'id': updated_user.id,
-            'first_name': updated_user.first_name,
-            'last_name': updated_user.last_name,
-            'email': updated_user.email,
-            'is_admin': updated_user.is_admin,
-            'is_owner': updated_user.is_owner,
-            'owned_places': [place.id for place in updated_user.owned_places],
-            'rented_places': [
-                place.id
-                for place in updated_user.rented_places
-            ],
-            'created_at': updated_user.created_at.isoformat(),
-            'updated_at': updated_user.updated_at.isoformat()
-        }, 200
+        try:
+            user = facade.get_user(user_id)
+            if not user:
+                return {'error': 'User not found'}, 404
+
+            if user.id != current_user['id']:
+                return {'error': 'Action not allowed'}, 403
+            updated_user = facade.update_user(user_id, user_data)
+            if not updated_user:
+                return {'error': 'User not found'}, 404
+            if 'password' in user_data:
+                return {'error': "You cannot or password."}, 403
+
+            return {
+                'id': updated_user.id,
+                'first_name': updated_user.first_name,
+                'last_name': updated_user.last_name,
+                'email': updated_user.email,
+                'is_admin': updated_user.is_admin,
+                'is_owner': updated_user.is_owner,
+                'owned_places': [place.id for place in updated_user.owned_places],
+                'rented_places': [
+                    place.id
+                    for place in updated_user.rented_places
+                ],
+                'created_at': updated_user.created_at.isoformat(),
+                'updated_at': updated_user.updated_at.isoformat()
+            }, 200
+        except ValueError as e:
+            return {'error': str(e)}, 400
+        except Exception as e:
+            return {'error': str(e)}, 500

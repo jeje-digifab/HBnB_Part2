@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import hbnb_facade as facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import logging
 
 logger = logging.getLogger(__name__)
@@ -57,12 +58,16 @@ class PlaceList(Resource):
     @api.expect(place_model, validate=True)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def post(self):
         """Create a new place."""
+        current_user = get_jwt_identity()
         place_data = api.payload
         logger.info(f"Payload received: {place_data}")
 
         try:
+            place_data['owner_id'] = current_user['id']  # check if owner_id is present
             place = facade.create_place(place_data)
             return place.to_dict(), 201
         except ValueError as e:
@@ -70,7 +75,7 @@ class PlaceList(Resource):
             return {'error': str(e)}, 400
         except Exception as e:
             logger.error(f"Exception: {str(e)}")
-            return {'message': str(e)}, 500
+            return {'message': str(e)}, 500 
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
@@ -107,17 +112,29 @@ class PlaceResource(Resource):
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def put(self, place_id):
         """Update a place's information"""
+        current_user = get_jwt_identity()
         place_data = api.payload
         logger.info(f"PUT request data: {place_data}")
 
         try:
+            place = facade.get_place(place_id)
+
+            if not place:
+                return {'error': 'Place not found'}, 404
+            
+            if place.owner_id != current_user['id']:
+                return {'error': 'Action not allowed'}, 403
+
             updated_place = facade.update_place(place_id, place_data)
             if updated_place:
                 return updated_place.to_dict(), 200
             else:
                 return {'error': 'Place not found'}, 404
+
         except KeyError as e:
             logger.error(f"KeyError: {str(e)}")
             return {'error': f'Missing required field: {str(e)}'}, 400
