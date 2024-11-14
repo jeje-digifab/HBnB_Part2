@@ -1,15 +1,27 @@
+from app import db
 from app.models.BaseModel import BaseModel
 from datetime import datetime
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import generate_password_hash, check_password_hash
 import re
-bcrypt = Bcrypt()
 
-class User(BaseModel):
-    """Represents a user in the application.
 
-    Inherits from BaseModel and includes attributes for user identification,
-    authentication, and management of owned and rented places.
-    """
+class User(BaseModel, db.Model):
+    __tablename__ = 'user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    is_owner = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    owned_places = db.relationship('Place', backref='owner', lazy=True)
+    # relationship with places owned/rented
+    rented_places = db.relationship('Place', backref='renter', lazy=True)
 
     def __init__(self, **kwargs):
         """Initialize a User instance with given attributes.
@@ -147,27 +159,13 @@ class User(BaseModel):
         super().update(data)
 
     def set_password(self, password):
-        """Set the user's password after hashing it.
-
-        Args:
-            password (str): The password to set.
-
-        Raises:
-            ValueError: If no password is provided.
-        """
+        """Set the user's password after hashing it."""
         if password:
-            self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+            self.password = generate_password_hash(password).decode('utf-8')
         else:
             raise ValueError("Password is required")
 
+    def check_password(self, password):
+        """Check if the provided password matches the user's hashed password"""
 
-    def verify_password(self, password):
-        """Check if the provided password matches the user's hashed password.
-
-        Args:
-            password (str): The password to check.
-
-        Returns:
-            bool: True if the password matches, False otherwise.
-        """
-        return bcrypt.check_password_hash(self.password, password)
+        return check_password_hash(self.password, password)
