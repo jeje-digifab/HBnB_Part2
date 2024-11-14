@@ -1,4 +1,10 @@
 from abc import ABC, abstractmethod
+from sqlalchemy.exc import SQLAlchemyError
+
+
+class RepositoryException(Exception):
+    pass
+
 
 class Repository(ABC):
     @abstractmethod
@@ -25,71 +31,56 @@ class Repository(ABC):
     def get_by_attribute(self, attr_name, attr_value):
         pass
 
-class InMemoryRepository(Repository):
-    def __init__(self):
-        self._storage = {}
 
-    def add(self, obj):
-        self._storage[obj.id] = obj
-
-    def get(self, obj_id):
-        return self._storage.get(obj_id)
-
-    def get_all(self):
-        return list(self._storage.values())
-
-    def update(self, obj_id, data):
-        obj = self.get(obj_id)
-        if obj:
-            obj.update(data)
-
-    def delete(self, obj_id):
-        if obj_id in self._storage:
-            del self._storage[obj_id]
-            return True
-        return False
-
-    def get_by_attribute(self, attr_name, attr_value):
-        return next(
-            (obj for obj in self._storage.values()
-                if getattr(obj, attr_name) == attr_value),
-            None
-        )
-
-
-""" POUR L'INSTANT PAS DE DATABASE
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):
+        from app import db
         self.model = model
+        self.db = db
 
     def add(self, obj):
-        from app import db  # Import db inside the method
-        db.session.add(obj)
-        db.session.commit()
+        try:
+            self.db.session.add(obj)
+            self.db.session.commit()
+            return obj
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            raise RepositoryException(f"Error adding object: {str(e)}")
 
     def get(self, obj_id):
-        from app import db  # Import db inside the method
         return self.model.query.get(obj_id)
 
     def get_all(self):
-        from app import db  # Import db inside the method
         return self.model.query.all()
 
     def update(self, obj_id, data):
-        from app import db  # Import db inside the method
         obj = self.get(obj_id)
         if obj:
-            for key, value in data.items():
-                setattr(obj, key, value)
-            db.session.commit()
+            try:
+                for key, value in data.items():
+                    setattr(obj, key, value)
+                self.db.session.commit()
+                return obj
+            except SQLAlchemyError as e:
+                self.db.session.rollback()
+                raise RepositoryException(f"Error updating object: {str(e)}")
+        return None
 
     def delete(self, obj_id):
-        from app import db  # Import db inside the method
         obj = self.get(obj_id)
         if obj:
-            db.session.delete(obj)
-            db.session.commit()
+            try:
+                self.db.session.delete(obj)
+                self.db.session.commit()
+                return True
+            except SQLAlchemyError as e:
+                self.db.session.rollback()
+                raise RepositoryException(f"Error deleting object: {str(e)}")
+        return False
 
     def get_by_attribute(self, attr_name, attr_value):
-        from app import db  # Import db inside the method
-        return self.model.query.filter(getattr(self.model, attr_name) == attr_value).first() """
+        return (
+            self.model.query
+            .filter(getattr(self.model, attr_name) == attr_value)
+            .first()
+        )
