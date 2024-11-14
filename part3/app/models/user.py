@@ -132,6 +132,6 @@ class User(BaseModel, db.Model):
         else:
             raise ValueError("Password is required")
 
-    def check_password(self, password):
+    def verify_password(self, password):
         """Check if the provided password matches the user's hashed password"""
         return check_password_hash(self.password, password)
