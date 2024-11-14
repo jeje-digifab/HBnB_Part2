@@ -54,5 +54,5 @@ class ProtectedResource(Resource):
             return {'error': 'User not found'}, 404
 
         return {
-            'message': f'Bienvenue, {user.first_name} {user.last_name} !'
+            'message': f'Welcome, {user.first_name} {user.last_name} !'
         }, 200
