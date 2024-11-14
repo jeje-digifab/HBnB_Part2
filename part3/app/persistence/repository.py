@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import and_
 
 
 class RepositoryException(Exception):
@@ -84,3 +85,9 @@ class SQLAlchemyRepository(Repository):
             .filter(getattr(self.model, attr_name) == attr_value)
             .first()
         )
+
+    def get_by_attributes(self, attributes):
+        query = self.model.query
+        for attr_name, attr_value in attributes.items():
+            query = query.filter(getattr(self.model, attr_name) == attr_value)
+        return query.first()

@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from app import db
 
+
 class BaseModel:
     """Base class for all models in the application.
 
@@ -19,9 +20,11 @@ class BaseModel:
         to_dict(): Converts the model instance to a dictionary representation.
         update(data): Updates model attributes based on the provided dictionary.
     """
-    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = db.Column(db.String(36), primary_key=True,
+                   default=lambda: str(uuid.uuid4()))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         if kwargs:

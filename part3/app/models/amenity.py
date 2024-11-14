@@ -1,6 +1,6 @@
 from app.models.BaseModel import BaseModel
 from app import db
-from app.models.place_amenity import place_amenity
+
 
 class Amenity(BaseModel, db.Model):
     """
@@ -45,6 +45,18 @@ class Amenity(BaseModel, db.Model):
         # Update the name and save the object to update the timestamp
         self.name = name
         self.save()
+
+    def to_dict(self):
+        """Convert the Amenity instance to a dictionary."""
+        amenity_dict = {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            '__class__': self.__class__.__name__
+        }
+        return amenity_dict
 
     def __repr__(self):
         """
