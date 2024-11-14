@@ -4,6 +4,7 @@ from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
 
+
 class HBnBFacade:
     """Facade for managing users and places in the HBnB application.
 
@@ -246,5 +247,6 @@ class HBnBFacade:
             review for review in self.review_repository.get_all()
             if review.place.id == place_id
         ]
+
 
 hbnb_facade = HBnBFacade()

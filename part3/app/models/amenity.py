@@ -1,6 +1,8 @@
 from app.models.BaseModel import BaseModel
+from app import db
+from app.models.place_amenity import place_amenity
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, db.Model):
     """
     Represents an amenity in the HBnB application.
 
@@ -15,6 +17,10 @@ class Amenity(BaseModel):
     - description (str): A brief description of the amenity.
     Optional, but must not exceed 255 characters.
     """
+    __tablename__ = 'amenity'
+
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
 
     def __init__(self, name: str, description: str = None):
         """
@@ -23,7 +29,6 @@ class Amenity(BaseModel):
         super().__init__()
         self.set_name(name)
         self.description = description  # Optional attribute
-
 
     def set_name(self, name: str):
         """

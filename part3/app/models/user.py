@@ -8,19 +8,14 @@ import re
 class User(BaseModel, db.Model):
     __tablename__ = 'user'
 
-    id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     is_owner = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     owned_places = db.relationship('Place', backref='owner', lazy=True)
-    # relationship with places owned/rented
     rented_places = db.relationship('Place', backref='renter', lazy=True)
 
     def __init__(self, **kwargs):
@@ -42,8 +37,6 @@ class User(BaseModel, db.Model):
         self.is_owner = kwargs.get('is_owner', False)
         self.owned_places = []
         self.rented_places = []
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
 
     def __str__(self):
         """Return a string representation of the User instance."""
@@ -82,8 +75,8 @@ class User(BaseModel, db.Model):
             dict: A dictionary representation of the user,
             excluding the password.
         """
-        user_dict = super().to_dict()
-        user_dict.update({
+        user_dict = {
+            "id": self.id,
             "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -92,9 +85,8 @@ class User(BaseModel, db.Model):
             "owned_places": [place.id for place in self.owned_places],
             "rented_places": [place.id for place in self.rented_places],
             "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat()})
-
-        user_dict.pop("password", None)
+            "updated_at": self.updated_at.isoformat()
+        }
         return user_dict
 
     @staticmethod
@@ -133,31 +125,6 @@ class User(BaseModel, db.Model):
             raise ValueError(f"{field_name} must be less than 50 characters")
         return name
 
-    def save(self):
-        """Update the updated_at timestamp and save the user instance."""
-        self.updated_at = datetime.utcnow()
-        super().save()
-
-    def update(self, data):
-        """Update user attributes with provided data.
-
-        Args:
-            data (dict): A dictionary of attributes to update.
-        """
-        if 'email' in data:
-            data['email'] = self.validate_email(data['email'])
-        if 'first_name' in data:
-            data['first_name'] = self.validate_name(
-                data['first_name'], "First Name")
-        if 'last_name' in data:
-            data['last_name'] = self.validate_name(
-                data['last_name'], "Last Name")
-        if 'password' in data:
-            self.set_password(data['password'])
-            data.pop('password', None)
-
-        super().update(data)
-
     def set_password(self, password):
         """Set the user's password after hashing it."""
         if password:
@@ -167,5 +134,4 @@ class User(BaseModel, db.Model):
 
     def check_password(self, password):
         """Check if the provided password matches the user's hashed password"""
-
         return check_password_hash(self.password, password)
