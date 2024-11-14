@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import hbnb_facade as facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import logging
 
 logger = logging.getLogger(__name__)
@@ -55,12 +56,26 @@ class ReviewList(Resource):
     @api.expect(review_model, validate=True)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def post(self):
         """Register a new review"""
         data = api.payload
+        current_user = get_jwt_identity()
         logger.info(f"Payload received: {data}")
 
         try:
+            place_id = data.get('place_id')  # check if place_id is provided
+            place = facade.get_place(place_id)  # check if place exists
+            if place is None:
+                return {'message': 'Place not found'}, 404
+            
+            if place.owner_id == current_user['id']:  # Check if the user is the owner of the place
+                return {'message': 'Action not allowed: You cannot review your own place'}, 403
+            existing_review = facade.get_review_by_user_and_place(current_user['id'], place_id)  # Check if the user has already reviewed the place
+            if existing_review:
+                return {'message': 'Action not allowed: You have already reviewed this place'}, 403
+            
             new_review = facade.create_review(data)
             return {
                 'message': 'Review created',
@@ -110,12 +125,22 @@ class ReviewResource(Resource):
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def put(self, review_id):
         """Update a review's information"""
         data = api.payload
+        current_user = get_jwt_identity()
         logger.info(f"PUT request data: {data}")
 
         try:
+            review = facade.get_review(review_id)  # Get the review by ID
+            if review is None:
+                return {'message': 'Review not found'}, 404
+            
+            if review.user_id != current_user['id']:  # Check if the user is the owner of the review
+                return {'message': 'Action not allowed'}, 403
+
             updated_review = facade.update_review(review_id, data)
             if updated_review:
                 return {
@@ -138,11 +163,20 @@ class ReviewResource(Resource):
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
+    @api.response(403, 'Action not allowed')
+    @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
         logger.info(f"DELETE request for review_id: {review_id}")
-
+        current_user = get_jwt_identity()
         try:
+            review = facade.get_review(review_id)  # Get the review by ID
+            if review is None:
+                return {'message': 'Review not found'}, 404
+            
+            if review.user_id != current_user['id']:  # Check if the user is the owner of the review
+                return {'message': 'Action not allowed'}, 403
+            
             if facade.delete_review(review_id):
                 return {'message': 'Review deleted successfully'}, 200
             else:
