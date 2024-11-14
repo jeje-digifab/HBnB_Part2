@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-
+from app import db
 
 class BaseModel:
     """Base class for all models in the application.

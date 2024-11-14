@@ -251,10 +251,5 @@ class HBnBFacade:
             review for review in self.review_repository.get_all()
             if review.place.id == place_id
         ]
-        
-    def get_review_by_user_and_place(self, user_id, place_id):
-        """Get a review by user and place."""
-        return next((review for review in self.review_repository
-                    if review.user.id == user_id and review.place.id == place_id), None)
-    
+
 hbnb_facade = HBnBFacade()
