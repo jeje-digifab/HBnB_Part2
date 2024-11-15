@@ -1,75 +1,64 @@
-# HBnB Project - Project Setup
 
-## Overview
+#HBNB Part 3
 
-This project is part of the **HBnB** series, focused on building a web application using Python, Flask, and RESTful API principles. This document outlines the project structure, the purpose of each directory, and instructions for setting up and running the application.
+Enhanced Backend with Authentication and Database Integration
 
-## Project Structure
 
-The project follows a modular architecture to ensure scalability and maintainability. Below is a description of the key directories and files:
+## API Reference
 
-### Directories
+![Description Database](Pictures/database.png)
 
-- **`api/`**: Contains the Flask API logic, including routes and views to manage client requests.
-- **`models/`**: Contains the core business logic and models, such as `User`, `Place`, `Review`, and `Amenity`.
-- **`tests/`**: Holds unit tests to validate API endpoints and business logic.
-- **`utils/`**: Contains utility functions used throughout the project, such as error handling and response formatting.
-- **`static/`**: Includes static files for the front-end (CSS, JavaScript, images).
-- **`templates/`**: Stores HTML templates for dynamic content rendering (if needed).
 
-### Files
+## Authors
 
-- **`app.py`**: The main file that initializes the Flask app and configures the routes.
-- **`requirements.txt`**: A list of dependencies required for the project.
-- **`README.md`**: Documentation and instructions for setting up and running the project.
-- **`config.py`**: Handles configuration settings for different environments (development, production, etc.).
+- [@Enes Gemici] (https://github.com/ZykeLaDebrouille)
+- [@Jerôme Romand] (https://github.com/jeje-digifab)
+- [@Nadège Luthier] (https://github.com/NadegeL)
 
-## Installation and Setup
 
-### Prerequisites
+## UML
 
-- Ensure that Python 3.8 or above is installed on your system.
-- Make sure you have a package manager to install Python dependencies (e.g., pip).
+![Description de l'image](Pictures/diagram-er-hbnb.png)
 
-### Steps to Install and Run
+## Installation
 
-1. **Clone the repository** to your local machine.
+Operating system : Ubuntu 20.04 LTS
+Virtual Environment : hbtn2
+Flask : flask_sqlalchemy, flask_migrate, flask_bcrypt, flask_jwt_extended
+## Roadmap
 
-   ```bash
-   git clone https://github.com/<your-username>/holbertonschool-hbnb.git
-   cd holbertonschool-hbnb
-   ```
+Implement JWT authentication to secure your API and manage user sessions.
 
-2. **Set up a virtual environment** (recommended but optional) to manage dependencies.
+Enforce role-based access control to restrict access based on user roles (regular users vs. administrators).
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+Replace in-memory repositories with a SQLite-based persistence layer using SQLAlchemy for development and configure MySQL for production.
 
-3. **Install all dependencies** listed in the `requirements.txt` file.
+Design and visualize a relational database schema using mermaid.js to handle relationships between users, places, reviews, and amenities.
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+Ensure the backend is secure, scalable, and provides reliable data storage for production environments.
 
-4. **Run the application** locally to launch the Flask server.
+## Run Locally
 
-   ```bash
-   python3 app.py
-   ```
-   The application will be available at http://127.0.0.1:5000/ in your browser.
+Clone the project
 
-### Testing
+```bash
+  git clone https://github.com/jeje-digifab/holbertonschool-hbnb.git
+```
 
-The project includes a test suite in the `tests/` directory, which you can use to ensure that the API endpoints and business logic are working as expected.
+Go to the project directory /part3
 
-## Conclusion
+```bash
+  cd part3
+```
 
-This setup provides a structured approach for building the HBnB application, enabling modular development and easy maintenance. Follow the setup steps to run the application and begin contributing to the project.
+Install dependencies
 
-## Autors
+```bash
+  pip install...
+```
 
-Nadège Luthier (https://github.com/NadegeL)
-Enes Gemici (https://github.com/ZykeLaDebrouille)
-Jérôme Romand (https://github.com/jeje-digifab/)
+Start the server
+
+```bash
+  npm run start
+```
