@@ -6,7 +6,7 @@ Enhanced Backend with Authentication and Database Integration
 
 ## API Reference
 
-![Description Database](part3/Database.png)
+![Description Database](Database.png)
 
 
 ## Authors
@@ -18,14 +18,7 @@ Enhanced Backend with Authentication and Database Integration
 
 ## UML
 
-![Description de l'image](part3/UML.png)
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
+![Description de l'image](UML.png)
 
 ## Installation
 
