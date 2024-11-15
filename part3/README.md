@@ -6,7 +6,7 @@ Enhanced Backend with Authentication and Database Integration
 
 ## API Reference
 
-![Description Database] (/part3/pictures/Database.png)
+![Description Database](part3/pictures/Database.png)
 
 
 ## Authors
@@ -18,7 +18,7 @@ Enhanced Backend with Authentication and Database Integration
 
 ## UML
 
-![Description de l'image] (/part3/pictures/UML.png)
+![Description de l'image](part3/pictures/UML.png)
 
 ## Installation
 
