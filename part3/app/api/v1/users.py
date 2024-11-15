@@ -28,7 +28,6 @@ user_model = api.model('User', {
                                example=True)
 })
 
-
 @api.route('/')
 class UserList(Resource):
     """
@@ -54,7 +53,10 @@ class UserList(Resource):
         user = facade.create_user(user_data)
         if not user:
             return {'error': 'Failed to create user'}, 400
-        return {'id': user.id, 'message': 'User created successfully'}, 201
+        return {
+            'message': 'User created successfully',
+            'user': user.to_dict()
+        }, 201
 
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
@@ -65,15 +67,7 @@ class UserList(Resource):
         details including `id`, `first_name`, `last_name`, and `email`.
         """
         users = facade.get_all_users()
-        return [{'id': user.id, 'first_name': user.first_name,
-                 'last_name': user.last_name, 'email': user.email,
-                 'is_admin': user.is_admin, 'is_owner': user.is_owner,
-                 'owned_places': [place.id for place in user.owned_places],
-                 'rented_places': [place.id for place in user.rented_places],
-                 'created_at': user.created_at.isoformat(),
-                 'updated_at': user.updated_at.isoformat()
-                 } for user in users], 200
-
+        return [user.to_dict() for user in users], 200
 
 @api.route('/<user_id>')
 class UserResource(Resource):
@@ -90,18 +84,7 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
-        return {
-            'id': user.id,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email,
-            'is_admin': user.is_admin,
-            'is_owner': user.is_owner,
-            'owned_places': [place.id for place in user.owned_places],
-            'rented_places': [place.id for place in user.rented_places],
-            'created_at': user.created_at.isoformat(),
-            'updated_at': user.updated_at.isoformat()
-        }, 200
+        return user.to_dict(), 200
 
     @api.expect(user_model, validate=True)
     @api.response(200, 'User details updated successfully')
@@ -129,23 +112,9 @@ class UserResource(Resource):
             if not updated_user:
                 return {'error': 'User not found'}, 404
             if 'password' in user_data:
-                return {'error': "You cannot or password."}, 403
+                return {'error': "You cannot update the password."}, 403
 
-            return {
-                'id': updated_user.id,
-                'first_name': updated_user.first_name,
-                'last_name': updated_user.last_name,
-                'email': updated_user.email,
-                'is_admin': updated_user.is_admin,
-                'is_owner': updated_user.is_owner,
-                'owned_places': [place.id for place in updated_user.owned_places],
-                'rented_places': [
-                    place.id
-                    for place in updated_user.rented_places
-                ],
-                'created_at': updated_user.created_at.isoformat(),
-                'updated_at': updated_user.updated_at.isoformat()
-            }, 200
+            return updated_user.to_dict(), 200
         except ValueError as e:
             return {'error': str(e)}, 400
         except Exception as e:

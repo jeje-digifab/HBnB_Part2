@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from app import db
 
 
 class BaseModel:
@@ -7,22 +8,24 @@ class BaseModel:
 
     This class provides common attributes and methods for all models, including
     unique identification (UUID), timestamps for creation and updates,
-    and methods
-    for converting model instances to dictionaries and updating attributes.
+    and methods for converting model instances to dictionaries and updating attributes.
 
     Attributes:
         id (str): Unique identifier for the model instance.
-        created_at (datetime): Timestamp for when the model
-        instance was created.
-        updated_at (datetime): Timestamp for when the model
-        instance was last updated.
+        created_at (datetime): Timestamp for when the model instance was created.
+        updated_at (datetime): Timestamp for when the model instance was last updated.
 
     Methods:
         save(): Updates the updated_at timestamp to the current time.
         to_dict(): Converts the model instance to a dictionary representation.
-        update(data): Updates model attributes based on the
-        provided dictionary.
+        update(data): Updates model attributes based on the provided dictionary.
     """
+    id = db.Column(db.String(36), primary_key=True,
+                   default=lambda: str(uuid.uuid4()))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, value in kwargs.items():
@@ -42,6 +45,8 @@ class BaseModel:
     def save(self):
         """Update the updated_at timestamp whenever the object is modified"""
         self.updated_at = datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
 
     def to_dict(self):
         """Convert the object to a dictionary"""
@@ -52,8 +57,7 @@ class BaseModel:
         return result
 
     def update(self, data):
-        """Update the attributes of the object based
-        on the provided dictionary"""
+        """Update the attributes of the object based on the provided dictionary"""
         for key, value in data.items():
             if key not in ['id', 'created_at', 'updated_at', '__class__']:
                 setattr(self, key, value)

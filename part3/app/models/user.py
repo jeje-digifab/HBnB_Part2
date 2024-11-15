@@ -1,15 +1,22 @@
+from app import db
 from app.models.BaseModel import BaseModel
 from datetime import datetime
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import generate_password_hash, check_password_hash
 import re
-bcrypt = Bcrypt()
 
-class User(BaseModel):
-    """Represents a user in the application.
 
-    Inherits from BaseModel and includes attributes for user identification,
-    authentication, and management of owned and rented places.
-    """
+class User(BaseModel, db.Model):
+    __tablename__ = 'user'
+
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    is_owner = db.Column(db.Boolean, default=False)
+
+    owned_places = db.relationship('Place', backref='owner', lazy=True)
+    rented_places = db.relationship('Place', backref='renter', lazy=True)
 
     def __init__(self, **kwargs):
         """Initialize a User instance with given attributes.
@@ -30,8 +37,6 @@ class User(BaseModel):
         self.is_owner = kwargs.get('is_owner', False)
         self.owned_places = []
         self.rented_places = []
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
 
     def __str__(self):
         """Return a string representation of the User instance."""
@@ -70,8 +75,8 @@ class User(BaseModel):
             dict: A dictionary representation of the user,
             excluding the password.
         """
-        user_dict = super().to_dict()
-        user_dict.update({
+        user_dict = {
+            "id": self.id,
             "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -80,9 +85,8 @@ class User(BaseModel):
             "owned_places": [place.id for place in self.owned_places],
             "rented_places": [place.id for place in self.rented_places],
             "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat()})
-
-        user_dict.pop("password", None)
+            "updated_at": self.updated_at.isoformat()
+        }
         return user_dict
 
     @staticmethod
@@ -121,53 +125,13 @@ class User(BaseModel):
             raise ValueError(f"{field_name} must be less than 50 characters")
         return name
 
-    def save(self):
-        """Update the updated_at timestamp and save the user instance."""
-        self.updated_at = datetime.utcnow()
-        super().save()
-
-    def update(self, data):
-        """Update user attributes with provided data.
-
-        Args:
-            data (dict): A dictionary of attributes to update.
-        """
-        if 'email' in data:
-            data['email'] = self.validate_email(data['email'])
-        if 'first_name' in data:
-            data['first_name'] = self.validate_name(
-                data['first_name'], "First Name")
-        if 'last_name' in data:
-            data['last_name'] = self.validate_name(
-                data['last_name'], "Last Name")
-        if 'password' in data:
-            self.set_password(data['password'])
-            data.pop('password', None)
-
-        super().update(data)
-
     def set_password(self, password):
-        """Set the user's password after hashing it.
-
-        Args:
-            password (str): The password to set.
-
-        Raises:
-            ValueError: If no password is provided.
-        """
+        """Set the user's password after hashing it."""
         if password:
-            self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+            self.password = generate_password_hash(password).decode('utf-8')
         else:
             raise ValueError("Password is required")
 
-
     def verify_password(self, password):
-        """Check if the provided password matches the user's hashed password.
-
-        Args:
-            password (str): The password to check.
-
-        Returns:
-            bool: True if the password matches, False otherwise.
-        """
-        return bcrypt.check_password_hash(self.password, password)
+        """Check if the provided password matches the user's hashed password"""
+        return check_password_hash(self.password, password)

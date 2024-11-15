@@ -1,8 +1,9 @@
 from app.models.BaseModel import BaseModel
 from app.models.user import User
+from app import db
+from app.models.place_amenity import place_amenity
 
-
-class Place(BaseModel):
+class Place(BaseModel, db.Model):
     """
     Represents a place in the application.
 
@@ -25,14 +26,19 @@ class Place(BaseModel):
     - reviews (list): A list to store related reviews.
     - amenities (list): A list to store related amenities.
     """
+    __tablename__ = 'place'
 
-    def __init__(self,
-                 title,
-                 description,
-                 price,
-                 latitude,
-                 longitude,
-                 owner: User):
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1024), nullable=True)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
+
+    reviews = db.relationship('Review', backref='place', lazy=True)
+    amenities = db.relationship('Amenity', secondary=place_amenity, backref='places', lazy=True)
+
+    def __init__(self, title, description, price, latitude, longitude, owner: User):
         """
         Initializes a new instance of the Place class.
 
@@ -48,7 +54,6 @@ class Place(BaseModel):
         Raises:
             ValueError: If the owner is not an instance of User.
         """
-
         super().__init__()
 
         if not isinstance(owner, User):

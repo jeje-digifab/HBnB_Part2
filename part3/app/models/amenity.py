@@ -1,6 +1,8 @@
 from app.models.BaseModel import BaseModel
+from app import db
 
-class Amenity(BaseModel):
+
+class Amenity(BaseModel, db.Model):
     """
     Represents an amenity in the HBnB application.
 
@@ -15,6 +17,10 @@ class Amenity(BaseModel):
     - description (str): A brief description of the amenity.
     Optional, but must not exceed 255 characters.
     """
+    __tablename__ = 'amenity'
+
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
 
     def __init__(self, name: str, description: str = None):
         """
@@ -23,7 +29,6 @@ class Amenity(BaseModel):
         super().__init__()
         self.set_name(name)
         self.description = description  # Optional attribute
-
 
     def set_name(self, name: str):
         """
@@ -40,6 +45,18 @@ class Amenity(BaseModel):
         # Update the name and save the object to update the timestamp
         self.name = name
         self.save()
+
+    def to_dict(self):
+        """Convert the Amenity instance to a dictionary."""
+        amenity_dict = {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            '__class__': self.__class__.__name__
+        }
+        return amenity_dict
 
     def __repr__(self):
         """

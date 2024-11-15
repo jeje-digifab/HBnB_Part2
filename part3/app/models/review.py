@@ -1,9 +1,33 @@
 from app.models.BaseModel import BaseModel
 from app.models.user import User
 from app.models.place import Place
+from app import db
 
 
-class Review(BaseModel):
+class Review(BaseModel, db.Model):
+    """
+    Represents a review in the application.
+
+    Inherits from BaseModel, which provides common attributes:
+    - id: Unique identifier for the review.
+    - created_at: Timestamp when the review is created.
+    - updated_at: Timestamp when the review is last updated.
+
+    Attributes:
+    - text (str): The text of the review.
+    - rating (int): The rating given to the place (1-5).
+    - user_id (str): The ID of the user who wrote the review.
+    - place_id (str): The ID of the place being reviewed.
+    """
+    __tablename__ = 'review'
+
+    text = db.Column(db.String(1024), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey(
+        'user.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey(
+        'place.id'), nullable=False)
+
     def __init__(self, text, rating, place, user):
         """Initialize a Review instance.
 
@@ -88,7 +112,8 @@ class Review(BaseModel):
 
         for key, value in review_data.items():
             if hasattr(self, key):
-                setattr(self, key, value)  # Update the attribute with the new value
+                # Update the attribute with the new value
+                setattr(self, key, value)
             else:
                 raise ValueError(f"Invalid attribute '{key}' for Review")
         self.save()  # Save the changes after updating

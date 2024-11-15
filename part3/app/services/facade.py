@@ -1,8 +1,10 @@
-from app.persistence.repository import InMemoryRepository #SQLAlchemyRepository
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
+
+
 class HBnBFacade:
     """Facade for managing users and places in the HBnB application.
 
@@ -13,18 +15,12 @@ class HBnBFacade:
 
     def __init__(self):
         """
-        Initialize the HBnBFacade with in-memory repositories.
-        Switched to SQLAlchemyRepository
+        Initialize the HBnBFacade with SQLAlchemy repositories.
         """
-
-        self.user_repository = InMemoryRepository()
-        self.place_repository = InMemoryRepository()
-        self.review_repository = InMemoryRepository()
-        self.amenity_repository = InMemoryRepository()
-        """self.user_repository = SQLAlchemyRepository(User)
+        self.user_repository = SQLAlchemyRepository(User)
         self.place_repository = SQLAlchemyRepository(Place)
         self.review_repository = SQLAlchemyRepository(Review)
-        self.amenity_repository = SQLAlchemyRepository(Amenity)"""
+        self.amenity_repository = SQLAlchemyRepository(Amenity)
 
     def create_user(self, user_data):
         """Create a new user with the provided data."""
@@ -251,10 +247,6 @@ class HBnBFacade:
             review for review in self.review_repository.get_all()
             if review.place.id == place_id
         ]
-        
-    def get_review_by_user_and_place(self, user_id, place_id):
-        """Get a review by user and place."""
-        return next((review for review in self.review_repository
-                    if review.user.id == user_id and review.place.id == place_id), None)
-    
+
+
 hbnb_facade = HBnBFacade()
