@@ -1,0 +1,9 @@
+Flask
+Flask-RESTx
+Flask-JWT-Extended
+python-dotenv
+pytest
+flask-bcrypt
+unittest
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==1.4.22

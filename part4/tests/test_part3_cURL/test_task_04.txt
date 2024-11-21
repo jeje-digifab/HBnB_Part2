@@ -1,0 +1,32 @@
+    // REQUEST POST TO CREATE A PLACE WITH TOKEN CHANGE TOKEN TO TEST AUTHORIZATION
+
+curl -X POST "http://127.0.0.1:5000/api/v1/places/" -d '{
+  "title": "Cozy Apartment",
+  "description": "A cozy apartment in the heart of the city",
+  "price": 100,
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "owner_id": "{id}"
+}' -H "Authorization: Bearer {token}" -H "Content-Type: application/json"
+
+
+    // REQUEST PUT TO UPDATE A PLACE CHANGE TOKEN TO TEST AUTHORIZATION
+
+curl -X PUT "http://127.0.0.1:5000/api/v1/places/<place_id>" -d '{
+  "title": "Luxury Apartment",
+  "description": "A luxury apartment in the heart of the city",
+  "price": 200,
+  "latitude": 37.7749,
+  "longitude": -122.4194
+}' -H "Authorization: Bearer <token>" -H "Content-Type: application/json"
+
+   //  Test Creating a Review (POST /api/v1/reviews/):
+
+
+   // Test Updating a Review (PUT /api/v1/reviews/<review_id>):
+
+
+   // Test Deleting a Review (DELETE /api/v1/reviews/<review_id>):
+
+
+   // Test Modifying User Data (PUT /api/v1/users/<user_id>):
