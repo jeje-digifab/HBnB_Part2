@@ -182,7 +182,7 @@ template {
 /*# sourceMappingURL=normalize.min.css.map */
 
 :root {
-    --color-primary: #d73953;
+    --color-primary: #f89a20;
     --color-black: #090909;
     --color-white: #ffffff;
     --color-light-grey: #f3f3f3;
@@ -190,11 +190,11 @@ template {
     --text-color: var(--color-black);
     --font-family-base: "Open Sans", Helvetica Neue, Helvetica, Arial, sans-serif;
     --font-family-title: "Raleway", Helvetica Neue, Helvetica, Arial, sans-serif;
-    --font-size-small: 1.2rem;
-    --font-size-medium: 1.6rem;
-    --font-size-large: 1.8rem;
-    --font-size-x-large: 2.3rem;
-    --font-size-xx-large: 4.8rem;
+    --font-size-small: 0.6rem;
+    --font-size-medium: 1rem;
+    --font-size-large: 1.5rem;
+    --font-size-x-large: 1.8rem;
+    --font-size-xx-large: 2.3rem;
     --font-weight-regular: 400;
     --font-weight-bold: 700;
     --line-height-small: 1.2;
@@ -206,7 +206,7 @@ template {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family-base);
 }
 
 body {
@@ -215,17 +215,90 @@ body {
 }
 
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--color-primary);
+    color: var(--color-white);
     padding: 1rem;
 }
 
 nav a {
-    color: #fff;
+    color: var(--color-white);
     text-decoration: none;
     margin-left: 1rem;
 }
 
+a:link {
+    color: #161616;
+    text-decoration: none;
+}
+
+/*
+a:visited {
+    font-style: italic;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    background-color: var(--color-light-grey);
+}
+*/
+
 main {
     padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-family-title);
+    font-weight: var(--font-weight-bold);
+}
+
+h1 {
+    font-size: var(--font-size-xx-large);
+}
+
+h2 {
+    font-size: var(--font-size-x-large);
+}
+
+h3 {
+    font-size: var(--font-size-large);
+}
+
+h4 {
+    font-size: var(--font-size-medium);
+}
+
+h5 {
+    font-size: var(--font-size-small);
+}
+
+h6 {
+    font-size: var(--font-size-small);
+}
+
+p {
+    font-size: var(--font-size-medium);
+    line-height: var(--line-height-base);
+}
+
+.footer {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    text-align: center;
+    padding: 1rem;
+}
+
+#filter {
+    text-align: center;
+}
+
+label {
+    font-weight: var(--font-weight-bold);
 }
