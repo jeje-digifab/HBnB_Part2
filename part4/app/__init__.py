@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from flask_cors import CORS
 import os
 
 db = SQLAlchemy()
@@ -16,6 +17,7 @@ load_dotenv('.env')
 def create_app(config_class="config.DevelopmentConfig"):
     """App configuration"""
     app = Flask(__name__)
+    CORS(app)
 
     app.config.from_object(config_class)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hbnb_database.db'
@@ -28,7 +30,7 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     """create the API"""
     api = Api(app, version='1.0', title='HBnB API',
-              description='API description')
+                description='API description')
 
     from app.api.v1.users import api as users_ns
     from app.api.v1.auth import api as auth_ns
