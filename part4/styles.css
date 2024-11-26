@@ -220,6 +220,13 @@ header {
     padding: 1rem;
 }
 
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-medium);
+}
+
 nav a {
     color: var(--color-white);
     text-decoration: none;
