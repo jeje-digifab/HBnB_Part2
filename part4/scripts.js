@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('password').value;
 
       try {  // modify fetch url if necessary
-          const response = await fetch('http://localhost:5000/api/v1/auth/login', {
+          const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -133,3 +133,13 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
   // Get the selected price value
   // Iterate over the places and show/hide them based on the selected price
 });
+
+
+// Get placeID from URL
+function getPlaceIdFromURL() {
+  // Extract the place ID from window.location.search
+  // Your code here
+}
+
+
+//
