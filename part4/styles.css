@@ -182,7 +182,7 @@ template {
 /*# sourceMappingURL=normalize.min.css.map */
 
 :root {
-    --color-primary: #f89a20;
+    --color-primary: #2cbcba;
     --color-black: #090909;
     --color-white: #ffffff;
     --color-light-grey: #f3f3f3;
@@ -210,7 +210,7 @@ template {
 }
 
 body {
-    background-color: #f4f4f4;
+    background-color: #a4a4a4;
     color: #333;
 }
 
