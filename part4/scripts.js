@@ -135,11 +135,41 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
 });
 
 
-// Get placeID from URL
+//  PART 4 ADD REVEIW Get placeID from URL
 function getPlaceIdFromURL() {
   // Extract the place ID from window.location.search
   // Your code here
 }
 
+// Event listener for review form submission
+document.addEventListener('DOMContentLoaded', () => {
+  const reviewForm = document.getElementById('review-form');
+  const token = checkAuthentication();
+  const placeId = getPlaceIdFromURL();
 
-//
+  if (reviewForm) {
+      reviewForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          // Get review text from form
+          // Make AJAX request to submit review
+          // Handle the response
+      });
+  }
+});
+
+// Fetch API to submit review
+async function submitReview(token, placeId, reviewText) {
+  // Make a POST request to submit review data
+  // Include the token in the Authorization header
+  // Send placeId and reviewText in the request body
+  // Handle the response
+}
+
+function handleResponse(response) {
+  if (response.ok) {
+      alert('Review submitted successfully!');
+      // Clear the form
+  } else {
+      alert('Failed to submit review');
+  }
+}
