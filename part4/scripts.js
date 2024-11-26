@@ -61,6 +61,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+//Check user authentication
+function checkAuthentication() {
+  const token = getCookie('token');
+  const loginLink = document.getElementById('login-link');
+
+  if (!token) {
+    loginLink.style.display = 'block';
+  } else {
+    loginLink.style.display = 'none';
+    // Fetch places data if the user is authenticated
+    fetchPlaces(token);
+  }
+}
+function getCookie(cookie_name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${cookie_name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
 // cards-loader
 document.addEventListener('DOMContentLoaded', function () {
   fetch('./static/cards-index.html')
@@ -90,23 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Error loading cards:', error));
 });
 
-//Check user authentication
-function checkAuthentication() {
-  const token = getCookie('token');
-  const loginLink = document.getElementById('login-link');
-
-  if (!token) {
-    loginLink.style.display = 'block';
-  } else {
-    loginLink.style.display = 'none';
-    // Fetch places data if the user is authenticated
-    fetchPlaces(token);
-  }
-}
-function getCookie(name) {
-  // Function to get a cookie value by its name
-  // Your code here
-}
 
 //Fetch places data
 async function fetchPlaces(token) {
@@ -115,6 +118,7 @@ async function fetchPlaces(token) {
   // Handle the response and pass the data to displayPlaces function
 }
 
+
 //Populate places list
 function displayPlaces(places) {
   // Clear the current content of the places list
@@ -122,6 +126,7 @@ function displayPlaces(places) {
   // For each place, create a div element and set its content
   // Append the created element to the places list
 }
+
 
 //Implement client-side filtering
 document.getElementById('price-filter').addEventListener('change', (event) => {
