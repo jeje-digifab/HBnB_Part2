@@ -218,29 +218,24 @@ body {
     flex-direction: column;
     background-color: #a4a4a4;
     color: #333;
-}
-
-
-header {
+    }
+    header {
     background-color: var(--color-primary);
     color: var(--color-white);
     padding: 1rem;
-}
-
-nav {
+    }
+    nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: var(--font-size-medium);
-}
-
-nav a {
+    }
+    nav a {
     color: var(--color-white);
     text-decoration: none;
     margin-left: 1rem;
-}
-
-a:link {
+    }
+    a:link {
     color: #161616;
     text-decoration: none;
 }
@@ -262,48 +257,21 @@ a:active {
 main {
     flex: 1; /* Permet au main de s'étendre pour occuper l'espace restant */
     padding: 2rem;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+    }
+    h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-title);
     font-weight: var(--font-weight-bold);
-}
-
-h1 {
-    font-size: var(--font-size-xx-large);
-}
-
-h2 {
-    font-size: var(--font-size-x-large);
-}
-
-h3 {
-    font-size: var(--font-size-large);
-}
-
-h4 {
-    font-size: var(--font-size-medium);
-}
-
-h5 {
-    font-size: var(--font-size-small);
-}
-
-h6 {
-    font-size: var(--font-size-small);
-}
-
-p {
+    }
+    h1 { font-size: var(--font-size-xx-large); }
+    h2 { font-size: var(--font-size-x-large); }
+    h3 { font-size: var(--font-size-large); }
+    h4 { font-size: var(--font-size-medium); }
+    h5, h6 { font-size: var(--font-size-small); }
+    p {
     font-size: var(--font-size-medium);
     line-height: var(--line-height-base);
-}
-
-.footer {
+    }
+    .footer {
     background-color: var(--color-primary);
     color: var(--color-white);
     text-align: center;
@@ -313,28 +281,28 @@ p {
 
 #filter {
     text-align: center;
-}
-
-#places-list {
+    }
+    #places-list {
     display: flex;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
     margin: 20px;
     padding: 10px;
-}
-
-.place-card,
-.review-card {
-    text-align: center;
-    border: 1px solid #ddd;
+    }
+    .place-card,
+    .review-card {
+    text-align: left;
+    border: 1px solid #cbcbcb;
     border-radius: 10px;
-    background-color: var(--color-white);
+    background-color: #cbcbcb;
     margin: 20px;
     padding: 10px;
-}
-
-.details-button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 15px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease;
+    }
+    .details-button {
     background-color: var(--color-primary);
     color: var(--color-white);
     border: none;
@@ -342,18 +310,23 @@ p {
     padding: 10px;
     margin: 10px;
     cursor: pointer;
-}
-
-.place-image {
+    }
+    .place-details:hover,
+    .reviews:hover,
+    .review-card:hover,
+    .add-review:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+    .place-image {
     width: 100%;
     height: 100px;
     object-fit: cover;
     border-radius: 10px;
-}
-
-label {
+    }
+    label {
     font-weight: var(--font-weight-bold);
-}
+    }
 
 /* Specific style for login.html */
 body.login-page {
@@ -492,4 +465,79 @@ body.login-page #login-form {
     to {
         box-shadow: 0 0 15px var(--color-primary);
     }
-}
+}    .place-details, .reviews, .add-review {
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    }
+    .place-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    }
+    .place-host,
+    .place-price,
+    .place-description,
+    .place-amenities {
+    margin: 10px 0;
+    }
+    .review-card {
+    text-align: left;
+
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    }
+    .review-card .reviewer-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    }
+    .review-card .review-text {
+    margin-bottom: 5px;
+    }
+    .review-card .review-rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    }
+    .review-card .review-rating > span {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    }
+    .review-card .review-rating > span:before {
+    content: "\2605";
+    position: absolute;
+    color: gold;
+    }
+    .rating {
+        direction: rtl; /* Inverser l'ordre des étoiles */
+    }
+    
+    .rating a {
+        color: #aaa; /* Couleur par défaut */
+        text-decoration: none;
+        font-size: 3em; /* Taille des étoiles */
+        transition: color .4s; /* Animation lors du changement de couleur */
+    }
+    
+    .rating a:hover,
+    .rating a:focus {
+        color: orange; /* Couleur au survol */
+    }
+    
+    .rating a:hover ~ a,
+    .rating a:focus ~ a {
+        color: orange; /* Changer la couleur des étoiles précédentes */
+    }
+    button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    }
+    button:hover {
+    background-color: #0056b3;
+    }

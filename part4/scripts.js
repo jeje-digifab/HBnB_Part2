@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form');
 
   if (loginForm) {
-  loginForm.addEventListener('submit', async (event) => {
+    loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      
+
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
@@ -44,19 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
               body: JSON.stringify({ email, password })
           });
 
-          if (response.ok) {
-              const data = await response.json();
-              document.cookie = `token=${data.access_token}; path=/; max-age=3600; SameSite=Strict`;
-              window.location.href = 'index.html';
-          } else {
-              const errorData = await response.json();
-              alert('Login failed : ' + (errorData.message || response.statusText));
-          }
+        if (response.ok) {
+          const data = await response.json();
+          document.cookie = `token=${data.access_token}; path=/; max-age=3600; SameSite=Strict`;
+          window.location.href = 'index.html';
+        } else {
+          const errorData = await response.json();
+          alert('Login failed : ' + (errorData.message || response.statusText));
+        }
       } catch (error) {
-          console.error('Login failed:', error);
-          alert('An error occurred while logging in');
+        console.error('Login failed:', error);
+        alert('An error occurred while logging in');
       }
-  });
+    });
   }
 });
 
@@ -110,6 +110,33 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Error loading cards:', error));
 });
 
+//change rating note in stars
+const ratingLinks = document.querySelectorAll('.rating a');
+
+ratingLinks.forEach(link => {
+  link.addEventListener('click', function (event) {
+    event.preventDefault(); // Empêche le comportement par défaut du lien
+    const ratingValue = this.getAttribute('href').substring(1); // Récupère la valeur de l'étoile
+    console.log(`${ratingValue} stars!`); // Affiche la note dans la console ou utilisez-la comme bon vous semble
+  });
+});
+//Check user authentication
+function checkAuthentication() {
+  const token = getCookie('token');
+  const loginLink = document.getElementById('login-link');
+
+  if (!token) {
+    loginLink.style.display = 'block';
+  } else {
+    loginLink.style.display = 'none';
+    // Fetch places data if the user is authenticated
+    fetchPlaces(token);
+  }
+}
+function getCookie(name) {
+  // Function to get a cookie value by its name
+  // Your code here
+}
 
 //Fetch places data
 async function fetchPlaces(token) {
