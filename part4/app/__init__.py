@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
@@ -30,7 +30,7 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     """create the API"""
     api = Api(app, version='1.0', title='HBnB API',
-                description='API description')
+              description='API description')
 
     from app.api.v1.users import api as users_ns
     from app.api.v1.auth import api as auth_ns
@@ -47,5 +47,10 @@ def create_app(config_class="config.DevelopmentConfig"):
     """create database tables"""
     with app.app_context():
         db.create_all()
+
+    @app.before_request
+    def disable_redirect_on_options():
+        if request.method == 'OPTIONS':
+            return '', 200
 
     return app
