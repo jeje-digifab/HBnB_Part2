@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Nav or Footer loading error:', error));
 
-        
     // login-loader
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     // Change rating note in stars
     const ratingLinks = document.querySelectorAll('.rating a');
     ratingLinks.forEach(link => {
@@ -54,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(`${ratingValue} stars!`);
         });
     });
-
 
     // Populate the price filter dropdown
     const priceFilter = document.getElementById('price-filter');
@@ -82,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     // Event listener for review form submission
     const reviewForm = document.getElementById('review-form');
     const token = getCookie('token');
@@ -96,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
 
 // Function to check user authentication based on token
 function checkAuthentication() {
@@ -112,15 +107,13 @@ function checkAuthentication() {
     }
 }
 
-
 // Function to get a specific cookie value by name
-function getCookie(cookie_name) {
+function getCookie(name) {
     const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${cookie_name}=`);
+    const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
 }
-
 
 // Fetch places data dynamically if the user is authenticated
 async function fetchPlaces(token) {
@@ -143,7 +136,6 @@ async function fetchPlaces(token) {
         console.error('Error fetching places:', error);
     }
 }
-
 
 // Function to populate the places list dynamically
 function displayPlaces(places) {
@@ -170,8 +162,8 @@ function displayPlaces(places) {
     });
 }
 
-
-async function fetchPlaceDetails(placeId, token) {
+// Fetch place details dynamically
+async function fetchPlaceDetails(token, placeId) {
     try {
         const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
             method: 'GET',
@@ -183,7 +175,8 @@ async function fetchPlaceDetails(placeId, token) {
 
         if (response.ok) {
             const place = await response.json();
-            displayPlaceDetails(place);
+            console.log('Place details:', place); // Add this line for debugging
+            displayPlaceDetails(place.place); // Ensure we are accessing the correct property
         } else {
             console.error('Failed to fetch place details:', response.statusText);
         }
@@ -192,31 +185,24 @@ async function fetchPlaceDetails(placeId, token) {
     }
 }
 
-
+// Display place details dynamically
 function displayPlaceDetails(place) {
     const placeDetailsSection = document.querySelector('#place-details');
     if (!placeDetailsSection) return;
 
+    const amenitiesList = place.amenities.length > 0 ? place.amenities.join(', ') : 'No amenities available';
+
     placeDetailsSection.innerHTML = `
         <h1>${place.title}</h1>
-        <p><strong>Host:</strong> ${place.host}</p>
+        <p><strong>Host:</strong> ${place.owner_id}</p>
         <p><strong>Price per night:</strong> $${place.price}</p>
         <p><strong>Description:</strong> ${place.description}</p>
-        <p><strong>Amenities:</strong> ${place.amenities.join(', ')}</p>
+        <p><strong>Amenities:</strong> ${amenitiesList}</p>
     `;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const token = getCookie('token');
-    const placeId = getPlaceIdFromURL();
-    if (token && placeId) {
-        fetchPlaceDetails(placeId, token);
-    }
-});
-
-
 // Fetch reviews for a specific place
-async function fetchReviews(placeId, token) {
+async function fetchReviews(token, placeId) {
     try {
         const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`, {
             method: 'GET',
@@ -237,7 +223,6 @@ async function fetchReviews(placeId, token) {
     }
 }
 
-
 // Dynamically display reviews
 function displayReviews(reviews) {
     const reviewsSection = document.querySelector('#reviews');
@@ -256,13 +241,13 @@ function displayReviews(reviews) {
     });
 }
 
-
-// Fetch reviews when the page loads
+// Fetch place details and reviews when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const token = getCookie('token');
     const placeId = getPlaceIdFromURL();
     if (token && placeId) {
-        fetchReviews(placeId, token);
+        fetchPlaceDetails(token, placeId);
+        fetchReviews(token, placeId);
     }
 });
 
@@ -306,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     alert('Review submitted successfully!');
                     reviewForm.reset();
-                    fetchReviews(placeId, token); // Refresh reviews
+                    fetchReviews(token, placeId); // Refresh reviews
                 } else {
                     const errorData = await response.json();
                     alert('Failed to submit review: ' + (errorData.message || response.statusText));
@@ -318,4 +303,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
