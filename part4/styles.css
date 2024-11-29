@@ -1,57 +1,57 @@
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 html {
     line-height: 1.15;
-    -webkit-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-    margin: 0
+    margin: 0;
 }
 
 main {
-    display: block
+    display: block;
 }
 
 h1 {
     font-size: 2em;
-    margin: .67em 0
+    margin: .67em 0;
 }
 
 hr {
     box-sizing: content-box;
     height: 0;
-    overflow: visible
+    overflow: visible;
 }
 
 pre {
     font-family: monospace, monospace;
-    font-size: 1em
+    font-size: 1em;
 }
 
 a {
-    background-color: transparent
+    background-color: transparent;
 }
 
 abbr[title] {
     border-bottom: none;
     text-decoration: underline;
-    text-decoration: underline dotted
+    text-decoration: underline dotted;
 }
 
 b,
 strong {
-    font-weight: bolder
+    font-weight: bolder;
 }
 
 code,
 kbd,
 samp {
     font-family: monospace, monospace;
-    font-size: 1em
+    font-size: 1em;
 }
 
 small {
-    font-size: 80%
+    font-size: 80%;
 }
 
 sub,
@@ -59,19 +59,19 @@ sup {
     font-size: 75%;
     line-height: 0;
     position: relative;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 sub {
-    bottom: -.25em
+    bottom: -.25em;
 }
 
 sup {
-    top: -.5em
+    top: -.5em;
 }
 
 img {
-    border-style: none
+    border-style: none;
 }
 
 button,
@@ -82,24 +82,24 @@ textarea {
     font-family: inherit;
     font-size: 100%;
     line-height: 1.15;
-    margin: 0
+    margin: 0;
 }
 
 button,
 input {
-    overflow: visible
+    overflow: visible;
 }
 
 button,
 select {
-    text-transform: none
+    text-transform: none;
 }
 
 [type=button],
 [type=reset],
 [type=submit],
 button {
-    -webkit-appearance: button
+    -webkit-appearance: button;
 }
 
 [type=button]::-moz-focus-inner,
@@ -107,18 +107,18 @@ button {
 [type=submit]::-moz-focus-inner,
 button::-moz-focus-inner {
     border-style: none;
-    padding: 0
+    padding: 0;
 }
 
 [type=button]:-moz-focusring,
 [type=reset]:-moz-focusring,
 [type=submit]:-moz-focusring,
 button:-moz-focusring {
-    outline: 1px dotted ButtonText
+    outline: 1px dotted ButtonText;
 }
 
 fieldset {
-    padding: .35em .75em .625em
+    padding: .35em .75em .625em;
 }
 
 legend {
@@ -127,56 +127,56 @@ legend {
     display: table;
     max-width: 100%;
     padding: 0;
-    white-space: normal
+    white-space: normal;
 }
 
 progress {
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 textarea {
-    overflow: auto
+    overflow: auto;
 }
 
 [type=checkbox],
 [type=radio] {
     box-sizing: border-box;
-    padding: 0
+    padding: 0;
 }
 
 [type=number]::-webkit-inner-spin-button,
 [type=number]::-webkit-outer-spin-button {
-    height: auto
+    height: auto;
 }
 
 [type=search] {
     -webkit-appearance: textfield;
-    outline-offset: -2px
+    outline-offset: -2px;
 }
 
 [type=search]::-webkit-search-decoration {
-    -webkit-appearance: none
+    -webkit-appearance: none;
 }
 
 ::-webkit-file-upload-button {
     -webkit-appearance: button;
-    font: inherit
+    font: inherit;
 }
 
 details {
-    display: block
+    display: block;
 }
 
 summary {
-    display: list-item
+    display: list-item;
 }
 
 template {
-    display: none
+    display: none;
 }
 
 [hidden] {
-    display: none
+    display: none;
 }
 
 /*# sourceMappingURL=normalize.min.css.map */
@@ -190,7 +190,7 @@ template {
     --text-color: var(--color-black);
     --font-family-base: "Open Sans", Helvetica Neue, Helvetica, Arial, sans-serif;
     --font-family-title: "Raleway", Helvetica Neue, Helvetica, Arial, sans-serif;
-    --font-size-small: 0.6rem;
+    --font-size-small: 0.8rem;
     --font-size-medium: 1rem;
     --font-size-large: 1.5rem;
     --font-size-x-large: 1.8rem;
@@ -210,7 +210,7 @@ template {
 }
 
 html, body {
-    height: 100%; /* Assure que le body et html occupent tout l'écran */
+    height: 100%;
 }
 
 body {
@@ -218,91 +218,101 @@ body {
     flex-direction: column;
     background-color: #a4a4a4;
     color: #333;
-    }
-    header {
+}
+
+header {
     background-color: var(--color-primary);
     color: var(--color-white);
     padding: 1rem;
-    }
-    nav {
+}
+
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: var(--font-size-medium);
-    }
-    nav a {
+}
+
+nav a {
     color: var(--color-white);
     text-decoration: none;
     margin-left: 1rem;
-    }
-    a:link {
+}
+
+a:link {
     color: #161616;
     text-decoration: none;
 }
 
-/*
-a:visited {
-    font-style: italic;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-a:active {
-    background-color: var(--color-light-grey);
-}
-*/
-
 main {
-    flex: 1; /* Permet au main de s'étendre pour occuper l'espace restant */
+    flex: 1;
     padding: 2rem;
-    }
-    h1, h2, h3, h4, h5, h6 {
+}
+
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-title);
     font-weight: var(--font-weight-bold);
-    }
-    h1 { font-size: var(--font-size-xx-large); }
-    h2 { font-size: var(--font-size-x-large); }
-    h3 { font-size: var(--font-size-large); }
-    h4 { font-size: var(--font-size-medium); }
-    h5, h6 { font-size: var(--font-size-small); }
-    p {
+}
+
+h1 {
+    font-size: var(--font-size-xx-large);
+}
+
+h2 {
+    font-size: var(--font-size-x-large);
+}
+
+h3 {
+    font-size: var(--font-size-large);
+}
+
+h4 {
+    font-size: var(--font-size-medium);
+}
+
+h5, h6 {
+    font-size: var(--font-size-small);
+}
+
+p {
     font-size: var(--font-size-medium);
     line-height: var(--line-height-base);
-    }
-    .footer {
+}
+
+.footer {
     background-color: var(--color-primary);
     color: var(--color-white);
     text-align: center;
     padding: 1rem;
-    margin-top: auto; /* Pousse le footer vers le bas */
+    margin-top: auto;
 }
 
 #filter {
     text-align: center;
-    }
-    #places-list {
+}
+
+#places-list {
     display: flex;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
     margin: 20px;
     padding: 10px;
-    }
-    .place-card,
-    .review-card {
+}
+
+.place-card,
+.review-card {
     text-align: left;
-    border: 1px solid #f3f3f3;
+    border: 1px solid var(--color-light-grey);
     border-radius: 10px;
-    background-color: #f3f3f3;
+    background-color: var(--color-white);
     margin: 20px;
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
-    0 8px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 15px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.3s ease;
-    }
-    .details-button {
+}
+
+.details-button {
     background-color: var(--color-primary);
     color: var(--color-white);
     border: none;
@@ -310,23 +320,25 @@ main {
     padding: 10px;
     margin: 10px;
     cursor: pointer;
-    }
-    .place-details:hover,
-    .reviews:hover,
-    .review-card:hover,
-    .add-review:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2),
-    0 10px 20px rgba(0, 0, 0, 0.25);
-    }
-    .place-image {
+}
+
+.place-details:hover,
+.reviews:hover,
+.review-card:hover,
+.add-review:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.place-image {
     width: 100%;
     height: 100px;
     object-fit: cover;
     border-radius: 10px;
-    }
-    label {
+}
+
+label {
     font-weight: var(--font-weight-bold);
-    }
+}
 
 /* Specific style for login.html */
 body.login-page {
@@ -346,7 +358,6 @@ body.login-page #login-form {
     text-align: center;
     animation: fadeIn 1s ease-in-out;
 }
-
 
 #login-form {
     background-color: var(--color-white);
@@ -400,35 +411,13 @@ body.login-page #login-form {
     background-position: 10px center;
 }
 
-
 #login-form button {
     width: 100%;
     padding: 0.8rem;
-    background-color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-dark-grey));
     color: var(--color-white);
     border: none;
     border-radius: 5px;
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-bold);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#login-form button:hover {
-    background-color: var(--color-dark-grey);
-    transform: scale(1.05);
-}
-
-#login-form button:active {
-    background-color: var(--color-primary);
-    transform: scale(1);
-}
-
-#login-form button {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-dark-grey));
-    padding: 0.8rem;
-    border-radius: 5px;
-    border: none;
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-bold);
     cursor: pointer;
@@ -450,31 +439,31 @@ body.login-page #login-form {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 300px; /* Largeur fixe pour uniformité */
-    background-color: #fff;
+    width: 300px;
+    background-color: var(--color-white);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 15px rgba(0, 0, 0, 0.15);
     margin: 20px;
-    overflow: hidden; /* Couper le contenu qui dépasse */
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .place-card:hover {
-    transform: translateY(-5px); /* Effet de survol */
+    transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.25);
 }
 
 .place-image-container {
     width: 100%;
-    height: 200px; /* Taille fixe pour les images */
-    overflow: hidden; /* Assure que l'image ne dépasse pas */
+    height: 200px;
+    overflow: hidden;
 }
 
 .place-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Adapter l'image pour qu'elle remplisse l'espace */
-    border-bottom: 1px solid #f3f3f3;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-light-grey);
 }
 
 .place-info {
@@ -483,14 +472,16 @@ body.login-page #login-form {
 }
 
 .place-title {
-    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: var(--font-size-large);
     margin-bottom: 10px;
     color: var(--color-dark-grey);
 }
 
 .place-price,
 .place-location {
-    font-size: 1rem;
+    font-size: var(--font-size-medium);
     color: #555;
     margin: 5px 0;
 }
@@ -517,8 +508,7 @@ body.login-page #login-form {
     box-shadow: none;
 }
 
-
-/* Animation pour le formulaire */
+/* Animation for the form */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -529,6 +519,7 @@ body.login-page #login-form {
         transform: translateY(0);
     }
 }
+
 @keyframes pulse {
     from {
         box-shadow: 0 0 5px var(--color-primary);
@@ -536,99 +527,129 @@ body.login-page #login-form {
     to {
         box-shadow: 0 0 15px var(--color-primary);
     }
-}    .place-details, .reviews, .add-review {
+}
+
+.add-review {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid var(--color-light-grey);
+    border-radius: 10px;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.place-details, .reviews {
     text-align: center;
     margin: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-light-grey);
     border-radius: 10px;
-    }
-    .place-title {
+    background-color: var(--color-white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 15px rgba(0, 0, 0, 0.15);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.place-title {
     font-size: 2em;
     margin-bottom: 10px;
-    }
-    .place-host,
-    .place-price,
-    .place-description,
-    .place-amenities {
-    margin: 10px 0;
-    }
-    .review-card {
-    text-align: left;
+}
 
+.place-host,
+.place-price,
+.place-description,
+.place-amenities {
+    margin: 10px 0;
+}
+
+.review-card {
+    text-align: left;
     margin-top: 10px;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-light-grey);
     border-radius: 10px;
-    }
-    .review-card .reviewer-name {
+    background-color: var(--color-white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.review-card .reviewer-name {
     font-weight: bold;
     margin-bottom: 5px;
-    }
-    .review-card .review-text {
+}
+
+.review-card .review-text {
     margin-bottom: 5px;
-    }
-    .review-card .review-rating {
+}
+
+.review-card .review-rating {
     unicode-bidi: bidi-override;
     direction: rtl;
-    }
-    .review-card .review-rating > span {
+}
+
+.review-card .review-rating > span {
     display: inline-block;
     position: relative;
     width: 1.1em;
-    }
-    .review-card .review-rating > span:before {
+}
+
+.review-card .review-rating > span:before {
     content: "\2605";
     position: absolute;
     color: gold;
-    }
-    .rating {
-        direction: rtl; /* Inverser l'ordre des étoiles */
-    }
-    
-    .rating a {
-        color: #aaa; /* Couleur par défaut */
-        text-decoration: none;
-        font-size: 3em; /* Taille des étoiles */
-        transition: color .4s; /* Animation lors du changement de couleur */
-    }
-    
-    .rating a:hover,
-    .rating a:focus {
-        color: orange; /* Couleur au survol */
-    }
-    
-    .rating a:hover ~ a,
-    .rating a:focus ~ a {
-        color: orange; /* Changer la couleur des étoiles précédentes */
-    }
-    button {
+}
+
+.rating {
+    direction: rtl;
+}
+
+.rating a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 3em;
+    transition: color .4s;
+}
+
+.rating a:hover,
+.rating a:focus {
+    color: orange;
+}
+
+.rating a:hover ~ a,
+.rating a:focus ~ a {
+    color: orange;
+}
+
+button {
     background-color: #007BFF;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    }
-    button:hover {
+}
+
+button:hover {
     background-color: #0056b3;
-    }
+}
 
-    .add-review {
-        background-color: var(--color-light-grey);
-        padding: 1.5rem; /* Réduit l'espacement interne */
-        border-radius: 10px; /* Coins légèrement arrondis */
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-        max-width: 450px; /* Réduit la largeur maximale */
-        margin: 1.5rem auto; /* Réduit l'espacement vertical */
-    }
+.add-review {
+    background-color: var(--color-light-grey);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    margin: 1.5rem auto;
+}
 
-    .add-review h2 {
-        text-align: center;
-        font-size: var(--font-size-medium); /* Réduit la taille du titre */
-        color: var(--color-primary);
-        margin-bottom: 1rem;
-        font-weight: var(--font-weight-bold);
-    }
+.add-review h2 {
+    text-align: center;
+    font-size: var(--font-size-large);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    font-weight: var(--font-weight-bold);
+}
 
 #review-form {
     display: flex;
@@ -639,16 +660,16 @@ body.login-page #login-form {
 #review-form label {
     font-weight: var(--font-weight-bold);
     color: var(--color-dark-grey);
-    font-size: var(--font-size-small); /* Taille du texte plus petite */
+    font-size: var(--font-size-medium);
 }
 
 #review-form input,
 #review-form textarea {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.8rem;
     border: 1px solid var(--color-light-grey);
     border-radius: 5px;
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-medium);
     background-color: #fff;
     transition: border-color 0.3s ease;
 }
@@ -661,21 +682,20 @@ body.login-page #login-form {
 }
 
 #review-form textarea {
-    min-height: 80px; /* Réduit la hauteur minimale */
+    min-height: 80px;
     resize: vertical;
 }
-
 
 .rating {
     display: flex;
     justify-content: center;
-    gap: 0.4rem; /* Réduit l'espace entre les étoiles */
-    margin-top: 0.5rem; /* Réduit la marge avec le reste du formulaire */
+    gap: 0.4rem;
+    margin-top: 0.5rem;
 }
 
 .rating a {
     color: #ddd;
-    font-size: 1.5rem;
+    font-size: var(--font-size-large);
     text-decoration: none;
     transition: color 0.3s ease;
     cursor: pointer;
@@ -683,17 +703,17 @@ body.login-page #login-form {
 
 .rating a:hover,
 .rating a:hover ~ a {
-    color: orange; /* Couleur des étoiles survolées */
+    color: orange;
 }
 
-/* Style pour le bouton */
+/* Style for the button */
 #review-form button {
     background: linear-gradient(135deg, var(--color-primary), var(--color-dark-grey));
     color: var(--color-white);
-    padding: 0.6rem;
+    padding: 0.8rem;
     border: none;
     border-radius: 5px;
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-medium);
     font-weight: var(--font-weight-bold);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
