@@ -187,19 +187,22 @@ async function fetchPlaceDetails(token, placeId) {
 
 // Display place details dynamically
 function displayPlaceDetails(place) {
+    const placeTitleSection = document.querySelector('#place-title');
     const placeDetailsSection = document.querySelector('#place-details');
-    if (!placeDetailsSection) return;
+    if (!placeTitleSection || !placeDetailsSection) return;
 
     const amenitiesList = place.amenities.length > 0 ? place.amenities.join(', ') : 'No amenities available';
 
+    placeTitleSection.innerHTML = `<h1>${place.title}</h1>`;
+
     placeDetailsSection.innerHTML = `
-        <h1>${place.title}</h1>
         <p><strong>Host:</strong> ${place.owner_id}</p>
         <p><strong>Price per night:</strong> $${place.price}</p>
         <p><strong>Description:</strong> ${place.description}</p>
         <p><strong>Amenities:</strong> ${amenitiesList}</p>
     `;
 }
+
 
 // Fetch reviews for a specific place
 async function fetchReviews(token, placeId) {
